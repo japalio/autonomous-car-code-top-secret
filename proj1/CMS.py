@@ -1,5 +1,6 @@
 #question 2
 #testing
+#return testing
 import random 
 import numpy as np 
 import hashlib
@@ -107,7 +108,7 @@ def nonDecreasingOrder(hashTable1, hashTable2, hashTable3, hashTable4, i):
     if(isHeavyHitter(minFrequency)):
       heavyHittersClub.append(x)
 
-  return minFreq9060, heavyHittersClub
+  return minFreq9050, heavyHittersClub
 
 
 
