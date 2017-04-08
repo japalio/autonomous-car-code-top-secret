@@ -3,9 +3,6 @@ import random
 import numpy as np 
 import matplotlib.pyplot as plt
 
-
-
-
 def plot_histogram(bins, filename = None):
   """
   This function wraps a number of hairy matplotlib calls to smooth the plotting 
@@ -52,6 +49,8 @@ def plot_histogram(bins, filename = None):
   if filename is not None: plt.savefig(filename+'.png', bbox_inches='tight')
 
   plt.show()
+
+
 #input:
 #output: number of balls in the most populated bin
 def strategy_one(N):
@@ -63,8 +62,6 @@ def strategy_one(N):
     bins[randomBin] += 1
   #find number of balls in most populated bin
   return max(bins)
-  
-  
   
   
 '''
@@ -86,7 +83,7 @@ def strategy_two(N):
     secondBinCount = bins[secondRandomBin]
     if (firstBinCount < secondBinCount):
       bins[firstRandomBin] += 1
-    if (secondBinCount < firstBinCount):
+    elif (secondBinCount < firstBinCount):
       bins[secondRandomBin] += 1
       
     #if both bins have the same count, select one randomly 
@@ -100,59 +97,51 @@ def strategy_two(N):
   return max(bins)
 
 
-'''
-Same as the previous strategy, except choosing three bins at random rather than two.
-'''
 def strategy_three(N):
   bins = [0] * N
-  
   for i in range(N):
-	  #select three bins at random
-	  firstRandomBin = random.randint(0, N-1)
-	  secondRandomBin = random.randint(0, N-1)
-	  thirdRandomBin = random.randint(0, N-1)
+    firstBin = random.randint(0, N-1)
+    secondBin = random.randint(0, N-1)
+    thirdBin = random.randint(0, N-1)
 
+    firstBinCount = bins[firstBin]  
+    secondBinCount = bins[secondBin]
+    thirdBinCount = bins[thirdBin]
 
-	  firstBinCount = bins[firstRandomBin]
-	  secondBinCount = bins[secondRandomBin]
-	  thirdBinCount = bins[thirdRandomBin]
-	  
-	  if(firstBinCount < secondBinCount and firstBinCount < thirdBinCount):
-	    bins[firstRandomBin] += 1
-	  elif(secondBinCount < firstBinCount and secondBinCount < thirdBinCount):
-	    bins[secondRandomBin] += 1
-	  elif(thirdBinCount < firstBinCount and thirdBinCount < secondBinCount):
-	  	bins[thirdRandomBin] += 1
-	  else:
-	    options = []
-	    if(firstBinCount == secondBinCount):
-	      if(firstBinCount == thirdBinCount):
-	        options.append(firstRandomBin)
-	        options.append(secondRandomBin)
-	        options.append(thirdRandomBin)
-	      else:
-	        options.append(firstRandomBin)
-	        options.append(secondRandomBin)
-	    elif(firstBinCount == thirdBinCount):
-	      options.append(firstBinCount)
-	      options.append(thirdBinCount)
-	    elif(secondBinCount == thirdBinCount):
-	      options.append(secondBinCount)
-	      options.append(thirdBinCount)
-	      
-	      
-	    numOptions = len(options)
-	    randomPick = random.randint(0, numOptions-1)
-	    if(randomPick == 0):
-	      bins[firstRandomBin] += 1
-	    elif(randomPick == 1):
-	      bins[secondRandomBin] += 1
-	    else:
-	      bins[thirdRandomBin] += 1
+    tuples = []
+    firstTuple = (firstBin, firstBinCount)
+    secondTuple = (secondBin, secondBinCount)
+    thirdTuple = (thirdBin, thirdBinCount)
+
+    tuples.append(firstTuple)
+    tuples.append(secondTuple)
+    tuples.append(thirdTuple)
+
+    tuples = sorted(tuples, key=lambda x: x[1])
+    
+    #now we have sorted tuples 
+
+    #check if the first is less than the second, then increment firstRandomBin
+    if (tuples[0][1] < tuples[1][1]):
+      bins[tuples[0][0]] += 1
+
+    #if not, there has to be equality
+    elif (tuples[0][1] == tuples[1][1] == tuples[2][1]):
+      randomBin = random.randint(0,2)
+      if randomBin == 0:
+        bins[tuples[0][0]] += 1
+      elif randomBin == 1:
+        bins[tuples[1][0]] += 1
+      else:
+        bins[tuples[2][0]] += 1
+    else:
+      randomBin = random.randint(0,1)
+      if randomBin == 0:
+        bins[tuples[0][0]] += 1
+      elif randomBin == 1:
+        bins[tuples[1][0]] += 1
+
   return max(bins)
-        
-    
-    
 
     
 def strategy_four(N):
@@ -171,8 +160,6 @@ def strategy_four(N):
     
 
   return max(bins)
-
-
 
 
 #HMMM can we get a double check on whether our indexing is correct?
