@@ -167,7 +167,35 @@ def callerFunction():
     numHeavyHitters.append(len(set(heavyHittersClub)))
     
   #print the value averaged over the 10 trials
+  print "Non Decreasing Order:"
   print sum(lastNumFrequencyGuess) / float(len(lastNumFrequencyGuess))
   print sum(numHeavyHitters) / float(len(numHeavyHitters))
+
+
+  lastNumFrequencyGuess = []
+  numHeavyHitters = []
+  for x in range(1, 11):
+    minFreq9050, heavyHittersClub = countMinSketchReverse(x)
+    lastNumFrequencyGuess.append(minFreq9050)
+    numHeavyHitters.append(len(set(heavyHittersClub)))
+
+  #print the value averaged over the 10 trials
+  print "Non Increasing Order:"
+  print sum(lastNumFrequencyGuess) / float(len(lastNumFrequencyGuess))
+  print sum(numHeavyHitters) / float(len(numHeavyHitters))
+
+
+  lastNumFrequencyGuess = []
+  numHeavyHitters = []
+  for x in range(1, 11):
+    minFreq9050, heavyHittersClub = countMinSketchRandom(x)
+    lastNumFrequencyGuess.append(minFreq9050)
+    numHeavyHitters.append(len(set(heavyHittersClub)))
+
+  #print the value averaged over the 10 trials
+  print "Random Order:"
+  print sum(lastNumFrequencyGuess) / float(len(lastNumFrequencyGuess))
+  print sum(numHeavyHitters) / float(len(numHeavyHitters))
+
   
 callerFunction()
