@@ -49,6 +49,14 @@ def createDataStream():
     
   return dataStream 
   
+  
+def createDecreasingDataStream():
+  #idk
+
+
+def createRandomDataStream():
+  #idk
+
 
 def isHeavyHitter(minFrequency):
   if minFrequency > 879:
