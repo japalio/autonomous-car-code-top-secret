@@ -52,12 +52,12 @@ def createDataStream():
   return dataStream 
   
   
-def createDecreasingDataStream():
-  #idk
+# def createDecreasingDataStream():
+#   #idk
 
 
-def createRandomDataStream():
-  #idk
+# def createRandomDataStream():
+#   #idk
 
 
 def isHeavyHitter(minFrequency):
@@ -66,48 +66,48 @@ def isHeavyHitter(minFrequency):
   else:
     return False
 
-def nonIncreasingOrder(hashTable1, hashTable2, hashTable, hashTabl4, i):
-  dataStream = createDecreasingDataStream()
-  minFreq9050 = None
-  heavyHittersClub = []
+# def nonIncreasingOrder(hashTable1, hashTable2, hashTable, hashTabl4, i):
+#   dataStream = createDecreasingDataStream()
+#   minFreq9050 = None
+#   heavyHittersClub = []
 
-  for numFrequencyPair in dataStream:
-    #for each of the 4 independent hash tables
-    x = numFrequencyPair[0]
-    frequency = numFrequencyPair[1]
-    countFrequencies = []
+#   for numFrequencyPair in dataStream:
+#     #for each of the 4 independent hash tables
+#     x = numFrequencyPair[0]
+#     frequency = numFrequencyPair[1]
+#     countFrequencies = []
 
-    for j in range(4):
+#     for j in range(4):
 
-      newX = str(x) + str(i-1)
+#       newX = str(x) + str(i-1)
 
-      #Calculate the MD5 score of the resulting string
+#       #Calculate the MD5 score of the resulting string
 
-      hexHash = hashlib.md5(newX).hexdigest()
+#       hexHash = hashlib.md5(newX).hexdigest()
 
-      #The hash value is the j-th byte of the score.
-      #incrementSlot is the decimal value 
-      byteArray = bytearray.fromhex(hexHash)
-      incrementSlot = byteArray[j]
+#       #The hash value is the j-th byte of the score.
+#       #incrementSlot is the decimal value 
+#       byteArray = bytearray.fromhex(hexHash)
+#       incrementSlot = byteArray[j + 1]
 
 
-      #increment the count 
-      if(j == 0):
-        countFrequencies.append(hashTable1[incrementSlot])  
-      elif(j == 1):
-        countFrequencies.append(hashTable2[incrementSlot])
-      elif(j == 2):
-        countFrequencies.append(hashTable3[incrementSlot])
-      elif(j == 3):
-        countFrequencies.append(hashTable4[incrementSlot])
+#       #increment the count 
+#       if(j == 0):
+#         countFrequencies.append(hashTable1[incrementSlot])  
+#       elif(j == 1):
+#         countFrequencies.append(hashTable2[incrementSlot])
+#       elif(j == 2):
+#         countFrequencies.append(hashTable3[incrementSlot])
+#       elif(j == 3):
+#         countFrequencies.append(hashTable4[incrementSlot])
 
-    minFrequency = min(countFrequencies)
-    if(x == 9050):
-      minFreq9050 = minFrequency
-    if(isHeavyHitter(minFrequency)):
-      heavyHittersClub.append(x)
+#     minFrequency = min(countFrequencies)
+#     if(x == 9050):
+#       minFreq9050 = minFrequency
+#     if(isHeavyHitter(minFrequency)):
+#       heavyHittersClub.append(x)
 
-  return minFreq9060, heavyHittersClub
+#   return minFreq9060, heavyHittersClub
 
 def nonDecreasingOrder(hashTable1, hashTable2, hashTable3, hashTable4, i):
   dataStream = createDataStream()
@@ -131,7 +131,7 @@ def nonDecreasingOrder(hashTable1, hashTable2, hashTable3, hashTable4, i):
       #The hash value is the j-th byte of the score.
       #incrementSlot is the decimal value 
       byteArray = bytearray.fromhex(hexHash)
-      incrementSlot = byteArray[j]
+      incrementSlot = byteArray[j + 1]
 
 
       #increment the count 
@@ -152,50 +152,50 @@ def nonDecreasingOrder(hashTable1, hashTable2, hashTable3, hashTable4, i):
 
   return minFreq9050, heavyHittersClub
 
-def countMinSketchReverse(i):
-  dataStream = createDecreasingDataStream()
-  # print dataStream
-  hashTable1 = [0]*256
-  hashTable2 = [0]*256
-  hashTable3 = [0]*256
-  hashTable4 = [0]*256
-  count = 0
-  for numFrequencyPair in dataStream:
-    count += 1
-    #for each of the 4 independent hash tables
-    x = numFrequencyPair[0]
-    frequency = numFrequencyPair[1]
+# def countMinSketchReverse(i):
+#   dataStream = createDecreasingDataStream()
+#   # print dataStream
+#   hashTable1 = [0]*256
+#   hashTable2 = [0]*256
+#   hashTable3 = [0]*256
+#   hashTable4 = [0]*256
+#   count = 0
+#   for numFrequencyPair in dataStream:
+#     count += 1
+#     #for each of the 4 independent hash tables
+#     x = numFrequencyPair[0]
+#     frequency = numFrequencyPair[1]
   
 
-    for j in range(4):
+#     for j in range(4):
 
-      newX = str(x) + str(i-1)
+#       newX = str(x) + str(i-1)
       
       
-      #Calculate the MD5 score of the resulting string
+#       #Calculate the MD5 score of the resulting string
       
 
-      hexHash = hashlib.md5(newX).hexdigest()
+#       hexHash = hashlib.md5(newX).hexdigest()
       
-      #The hash value is the j-th byte of the score.
-      #incrementSlot is the decimal value 
-      byteArray = bytearray.fromhex(hexHash)
-      incrementSlot = byteArray[j]
+#       #The hash value is the j-th byte of the score.
+#       #incrementSlot is the decimal value 
+#       byteArray = bytearray.fromhex(hexHash)
+#       incrementSlot = byteArray[j + 1]
       
       
-      #increment the count 
-      if(j == 0):
-        hashTable1[incrementSlot] += frequency
-      elif(j == 1):
-        hashTable2[incrementSlot] += frequency
-      elif(j == 2):
-        hashTable3[incrementSlot] += frequency
-      elif(j == 3):
-        hashTable4[incrementSlot] += frequency
+#       #increment the count 
+#       if(j == 0):
+#         hashTable1[incrementSlot] += frequency
+#       elif(j == 1):
+#         hashTable2[incrementSlot] += frequency
+#       elif(j == 2):
+#         hashTable3[incrementSlot] += frequency
+#       elif(j == 3):
+#         hashTable4[incrementSlot] += frequency
 
-    # print(hashTable1)
+#     # print(hashTable1)
 
-  return nonIncreasingOrder(hashTable1, hashTable2, hashTable3, hashTable4, i)
+#   return nonIncreasingOrder(hashTable1, hashTable2, hashTable3, hashTable4, i)
 
 
 
@@ -229,7 +229,7 @@ def countMinSketch(i):
       #The hash value is the j-th byte of the score.
       #incrementSlot is the decimal value 
       byteArray = bytearray.fromhex(hexHash)
-      incrementSlot = byteArray[j]
+      incrementSlot = byteArray[j + 1]
       
       
       #increment the count 
@@ -261,30 +261,30 @@ def callerFunction():
   print sum(numHeavyHitters) / float(len(numHeavyHitters))
 
 
-  lastNumFrequencyGuess = []
-  numHeavyHitters = []
-  for x in range(1, 11):
-    minFreq9050, heavyHittersClub = countMinSketchReverse(x)
-    lastNumFrequencyGuess.append(minFreq9050)
-    numHeavyHitters.append(len(set(heavyHittersClub)))
+  # lastNumFrequencyGuess = []
+  # numHeavyHitters = []
+  # for x in range(1, 11):
+  #   minFreq9050, heavyHittersClub = countMinSketchReverse(x)
+  #   lastNumFrequencyGuess.append(minFreq9050)
+  #   numHeavyHitters.append(len(set(heavyHittersClub)))
 
-  #print the value averaged over the 10 trials
-  print "Non Increasing Order:"
-  print sum(lastNumFrequencyGuess) / float(len(lastNumFrequencyGuess))
-  print sum(numHeavyHitters) / float(len(numHeavyHitters))
+  # #print the value averaged over the 10 trials
+  # print "Non Increasing Order:"
+  # print sum(lastNumFrequencyGuess) / float(len(lastNumFrequencyGuess))
+  # print sum(numHeavyHitters) / float(len(numHeavyHitters))
 
 
-  lastNumFrequencyGuess = []
-  numHeavyHitters = []
-  for x in range(1, 11):
-    minFreq9050, heavyHittersClub = countMinSketchRandom(x)
-    lastNumFrequencyGuess.append(minFreq9050)
-    numHeavyHitters.append(len(set(heavyHittersClub)))
+  # lastNumFrequencyGuess = []
+  # numHeavyHitters = []
+  # for x in range(1, 11):
+  #   minFreq9050, heavyHittersClub = countMinSketchRandom(x)
+  #   lastNumFrequencyGuess.append(minFreq9050)
+  #   numHeavyHitters.append(len(set(heavyHittersClub)))
 
-  #print the value averaged over the 10 trials
-  print "Random Order:"
-  print sum(lastNumFrequencyGuess) / float(len(lastNumFrequencyGuess))
-  print sum(numHeavyHitters) / float(len(numHeavyHitters))
+  # #print the value averaged over the 10 trials
+  # print "Random Order:"
+  # print sum(lastNumFrequencyGuess) / float(len(lastNumFrequencyGuess))
+  # print sum(numHeavyHitters) / float(len(numHeavyHitters))
 
   
 callerFunction()
