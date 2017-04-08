@@ -66,6 +66,49 @@ def isHeavyHitter(minFrequency):
   else:
     return False
 
+def RandomOrder(hashTable1, hashTable2, hashTable, hashTabl4, i):
+  dataStream = createRandomDataStream()
+  minFreq9050 = None
+  heavyHittersClub = []
+
+  for numFrequencyPair in dataStream:
+    #for each of the 4 independent hash tables
+    x = numFrequencyPair[0]
+    frequency = numFrequencyPair[1]
+    countFrequencies = []
+
+    for j in range(4):
+
+      newX = str(x) + str(i-1)
+
+      #Calculate the MD5 score of the resulting string
+
+      hexHash = hashlib.md5(newX).hexdigest()
+
+      #The hash value is the j-th byte of the score.
+      #incrementSlot is the decimal value 
+      byteArray = bytearray.fromhex(hexHash)
+      incrementSlot = byteArray[j + 1]
+
+
+      #increment the count 
+      if(j == 0):
+        countFrequencies.append(hashTable1[incrementSlot])  
+      elif(j == 1):
+        countFrequencies.append(hashTable2[incrementSlot])
+      elif(j == 2):
+        countFrequencies.append(hashTable3[incrementSlot])
+      elif(j == 3):
+        countFrequencies.append(hashTable4[incrementSlot])
+
+    minFrequency = min(countFrequencies)
+    if(x == 9050):
+      minFreq9050 = minFrequency
+    if(isHeavyHitter(minFrequency)):
+      heavyHittersClub.append(x)
+
+  return minFreq9060, heavyHittersClub
+
 def nonIncreasingOrder(hashTable1, hashTable2, hashTable, hashTabl4, i):
   dataStream = createDecreasingDataStream()
   minFreq9050 = None
@@ -198,7 +241,52 @@ def countMinSketchReverse(i):
   return nonIncreasingOrder(hashTable1, hashTable2, hashTable3, hashTable4, i)
 
 
+  
+def countMinSketchRandom(i):
+  dataStream = createRandomDataStream()
+  # print dataStream
+  hashTable1 = [0]*256
+  hashTable2 = [0]*256
+  hashTable3 = [0]*256
+  hashTable4 = [0]*256
+  count = 0
+  for numFrequencyPair in dataStream:
+    count += 1
+    #for each of the 4 independent hash tables
+    x = numFrequencyPair[0]
+    frequency = numFrequencyPair[1]
+  
 
+    for j in range(4):
+
+      newX = str(x) + str(i-1)
+      
+      
+      #Calculate the MD5 score of the resulting string
+      
+
+      hexHash = hashlib.md5(newX).hexdigest()
+      
+      #The hash value is the j-th byte of the score.
+      #incrementSlot is the decimal value 
+      byteArray = bytearray.fromhex(hexHash)
+      incrementSlot = byteArray[j + 1]
+      
+      
+      #increment the count 
+      if(j == 0):
+        hashTable1[incrementSlot] += frequency
+      elif(j == 1):
+        hashTable2[incrementSlot] += frequency
+      elif(j == 2):
+        hashTable3[incrementSlot] += frequency
+      elif(j == 3):
+        hashTable4[incrementSlot] += frequency
+
+    # print(hashTable1)
+
+  return RandomOrder(hashTable1, hashTable2, hashTable3, hashTable4, i)
+      
 
   
 def countMinSketch(i):
