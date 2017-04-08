@@ -53,11 +53,22 @@ def createDataStream():
   
   
 def createDecreasingDataStream():
-  #idk
+  dataStreamToReverse = createDataStream()
+  dataStream = list(reversed(dataStreamToReverse))
+  return dataStream
 
 
 def createRandomDataStream():
-  #idk
+  dataStreamTuples = createDataStream()
+  dataStream = []
+  for tup in dataStreamTuples:
+    freq = tup[1]
+    for i in range(int(freq)):
+      dataStream.append(tup[0])
+
+
+  random.shuffle(dataStream)
+  return dataStream
 
 
 def isHeavyHitter(minFrequency):
@@ -66,15 +77,14 @@ def isHeavyHitter(minFrequency):
   else:
     return False
 
-def RandomOrder(hashTable1, hashTable2, hashTable, hashTabl4, i):
+def RandomOrder(hashTable1, hashTable2, hashTable3, hashTable4, i):
   dataStream = createRandomDataStream()
   minFreq9050 = None
   heavyHittersClub = []
 
-  for numFrequencyPair in dataStream:
+  for data in dataStream:
     #for each of the 4 independent hash tables
-    x = numFrequencyPair[0]
-    frequency = numFrequencyPair[1]
+    x = data
     countFrequencies = []
 
     for j in range(4):
@@ -107,9 +117,9 @@ def RandomOrder(hashTable1, hashTable2, hashTable, hashTabl4, i):
     if(isHeavyHitter(minFrequency)):
       heavyHittersClub.append(x)
 
-  return minFreq9060, heavyHittersClub
+  return minFreq9050, heavyHittersClub
 
-def nonIncreasingOrder(hashTable1, hashTable2, hashTable, hashTabl4, i):
+def nonIncreasingOrder(hashTable1, hashTable2, hashTable3, hashTable4, i):
   dataStream = createDecreasingDataStream()
   minFreq9050 = None
   heavyHittersClub = []
@@ -150,7 +160,7 @@ def nonIncreasingOrder(hashTable1, hashTable2, hashTable, hashTabl4, i):
     if(isHeavyHitter(minFrequency)):
       heavyHittersClub.append(x)
 
-  return minFreq9060, heavyHittersClub
+  return minFreq9050, heavyHittersClub
 
 def nonDecreasingOrder(hashTable1, hashTable2, hashTable3, hashTable4, i):
   dataStream = createDataStream()
@@ -250,11 +260,10 @@ def countMinSketchRandom(i):
   hashTable3 = [0]*256
   hashTable4 = [0]*256
   count = 0
-  for numFrequencyPair in dataStream:
+  for data in dataStream:
     count += 1
     #for each of the 4 independent hash tables
-    x = numFrequencyPair[0]
-    frequency = numFrequencyPair[1]
+    x = data
   
 
     for j in range(4):
@@ -275,13 +284,13 @@ def countMinSketchRandom(i):
       
       #increment the count 
       if(j == 0):
-        hashTable1[incrementSlot] += frequency
+        hashTable1[incrementSlot] += 1
       elif(j == 1):
-        hashTable2[incrementSlot] += frequency
+        hashTable2[incrementSlot] += 1
       elif(j == 2):
-        hashTable3[incrementSlot] += frequency
+        hashTable3[incrementSlot] += 1
       elif(j == 3):
-        hashTable4[incrementSlot] += frequency
+        hashTable4[incrementSlot] += 1
 
     # print(hashTable1)
 
