@@ -14,8 +14,7 @@ def calculateHeavyHitters():
     totalNumElements += freq
 
   #threshold of 1% of total frequencies
-  threshold = totalNumElements * 0.01
-
+  threshold = totalNumElements * 0.01 #Threshold = 879.25
   for tup in dataStream:
     if tup[1] >= threshold:
       heavyHitters.append(tup[0])
@@ -50,6 +49,13 @@ def createDataStream():
     
   return dataStream 
   
+
+def isHeavyHitter(minFrequency):
+  if minFrequency > 879:
+    return True
+  else:
+    return False
+
 
 def nonDecreasingOrder(hashTable1, hashTable2, hashTable3, hashTable4, i):
   dataStream = createDataStream()
