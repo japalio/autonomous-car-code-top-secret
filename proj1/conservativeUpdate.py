@@ -1,5 +1,67 @@
 import random
 #testing
+def createDataStream():
+  dataStream = []
+  for i in range(9):
+    freq = i + 1
+    for j in range(1000):
+      value = j + i * 1000
+      dataStream.append((value, freq))
+  
+  for j in range(50):
+    i = j + 1
+    freq = math.pow(i,2)
+    value = 9000 + i 
+    dataStream.append((value, freq))
+    
+  return dataStream 
+
+def nonDecreasingOrder(hashTable1, hashTable2, hashTable3, hashTable4, i):
+  dataStream = createDataStream()
+  minFreq9050 = None
+  heavyHittersClub = []
+
+  for numFrequencyPair in dataStream:
+    #for each of the 4 independent hash tables
+    x = numFrequencyPair[0]
+    frequency = numFrequencyPair[1]
+    countFrequencies = []
+
+    for j in range(4):
+
+      newX = str(x) + str(i-1)
+
+      #Calculate the MD5 score of the resulting string
+
+      hexHash = hashlib.md5(newX).hexdigest()
+
+      #The hash value is the j-th byte of the score.
+      #incrementSlot is the decimal value 
+      byteArray = bytearray.fromhex(hexHash)
+      incrementSlot = byteArray[j + 1]
+
+
+      #increment the count 
+      if(j == 0):
+        countFrequencies.append(hashTable1[incrementSlot])  
+      elif(j == 1):
+        countFrequencies.append(hashTable2[incrementSlot])
+      elif(j == 2):
+        countFrequencies.append(hashTable3[incrementSlot])
+      elif(j == 3):
+        countFrequencies.append(hashTable4[incrementSlot])
+
+    minFrequency = min(countFrequencies)
+    if(x == 9050):
+      minFreq9050 = minFrequency
+    if(isHeavyHitter(minFrequency)):
+      heavyHittersClub.append(x)
+
+  return minFreq9050, heavyHittersClub
+
+
+  
+
 def countMinSketch(i):
   dataStream = createDataStream()
   # print dataStream
@@ -61,3 +123,21 @@ def countMinSketch(i):
    			hashTable4[incrementSlot] += frequency
 
   return nonDecreasingOrder(hashTable1, hashTable2, hashTable3, hashTable4, i)
+
+
+def callerFunction():
+  #9050
+  lastNumFrequencyGuess = []
+  numHeavyHitters = []
+  for x in range(1, 11):
+    minFreq9050, heavyHittersClub = countMinSketch(x)
+    lastNumFrequencyGuess.append(minFreq9050)
+    numHeavyHitters.append(len(set(heavyHittersClub)))
+    
+  #print the value averaged over the 10 trials
+  print "Non Decreasing Order:"
+  print sum(lastNumFrequencyGuess) / float(len(lastNumFrequencyGuess))
+  print sum(numHeavyHitters) / float(len(numHeavyHitters))
+
+
+callerFunction()
