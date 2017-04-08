@@ -1,5 +1,15 @@
 import random
+import math
+import hashlib 
 #testing
+
+def isHeavyHitter(minFrequency):
+  if minFrequency > 879:
+    return True
+  else:
+    return False
+
+    
 def createDataStream():
   dataStream = []
   for i in range(9):
@@ -75,7 +85,7 @@ def countMinSketch(i):
     #for each of the 4 independent hash tables
     x = numFrequencyPair[0]
     frequency = numFrequencyPair[1]
-  	currentTableFrequencies = []
+    currentTableFrequencies = []
 
     for j in range(4):
 
