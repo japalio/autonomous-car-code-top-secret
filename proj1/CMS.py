@@ -311,7 +311,7 @@ def countMinSketch(i):
     #for each of the 4 independent hash tables
     x = numFrequencyPair[0]
     frequency = numFrequencyPair[1]
-    print x
+    
 
     for j in range(4):
 

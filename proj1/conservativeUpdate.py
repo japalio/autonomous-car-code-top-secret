@@ -9,6 +9,10 @@ def isHeavyHitter(minFrequency):
   else:
     return False
 
+def createDecreasingDataStream():
+  dataStreamToReverse = createDataStream()
+  dataStream = list(reversed(dataStreamToReverse))
+  return dataStream
 
 def createRandomDataStream():
   dataStreamTuples = createDataStream()
@@ -129,6 +133,50 @@ def countMinSketchRandom(i):
 
 
   return RandomOrder(hashTable1, hashTable2, hashTable3, hashTable4, i)
+
+def nonIncreasingOrder(hashTable1, hashTable2, hashTable3, hashTable4, i):
+  dataStream = createDecreasingDataStream()
+  minFreq9050 = None
+  heavyHittersClub = []
+
+  for numFrequencyPair in dataStream:
+    #for each of the 4 independent hash tables
+    x = numFrequencyPair[0]
+    frequency = numFrequencyPair[1]
+    countFrequencies = []
+    for j in range(4):
+
+      newX = str(x) + str(i-1)
+
+      #Calculate the MD5 score of the resulting string
+
+      hexHash = hashlib.md5(newX).hexdigest()
+
+      #The hash value is the j-th byte of the score.
+      #incrementSlot is the decimal value 
+      byteArray = bytearray.fromhex(hexHash)
+      incrementSlot = byteArray[j + 1]
+
+
+
+
+      if(j == 0):
+        countFrequencies.append(hashTable1[incrementSlot])  
+      elif(j == 1):
+        countFrequencies.append(hashTable2[incrementSlot])
+      elif(j == 2):
+        countFrequencies.append(hashTable3[incrementSlot])
+      elif(j == 3):
+        countFrequencies.append(hashTable4[incrementSlot])
+    
+    minFrequency = min(countFrequencies)
+    #print countFrequencies
+    if(x == 9050):
+      minFreq9050 = minFrequency
+    if(isHeavyHitter(minFrequency)):
+      heavyHittersClub.append(x)
+
+  return minFreq9050, heavyHittersClub
     
 def nonDecreasingOrder(hashTable1, hashTable2, hashTable3, hashTable4, i):
   dataStream = createDataStream()
@@ -174,6 +222,58 @@ def nonDecreasingOrder(hashTable1, hashTable2, hashTable3, hashTable4, i):
 
   return minFreq9050, heavyHittersClub
 
+def countMinSketchDecreasing(i):
+  dataStream = createDecreasingDataStream()
+  # print dataStream
+  hashTable1 = [0]*256
+  hashTable2 = [0]*256
+  hashTable3 = [0]*256
+  hashTable4 = [0]*256
+  count = 0
+  for numFrequencyPair in dataStream:
+    count += 1
+    #for each of the 4 independent hash tables
+    x = numFrequencyPair[0]
+    frequency = numFrequencyPair[1]
+    
+    for inc in range(int(frequency)):
+      currentTableFrequencies = []
+      incrementSlots = []
+      # print x
+      for j in range(4):
+        newX = str(x) + str(i-1)
+        hexHash = hashlib.md5(newX).hexdigest()
+        byteArray = bytearray.fromhex(hexHash)
+        incrementSlot = byteArray[j + 1]
+        incrementSlots.append(incrementSlot)  
+    
+        if(j == 0):
+          currentTableFrequencies.append(hashTable1[incrementSlot])
+        elif(j == 1):
+          currentTableFrequencies.append(hashTable2[incrementSlot])
+        elif(j == 2):
+          currentTableFrequencies.append(hashTable3[incrementSlot])
+        elif(j == 3):
+          currentTableFrequencies.append(hashTable4[incrementSlot])
+
+      lowestCurrentCount = min(currentTableFrequencies)
+      updateIndices = []
+      for y in range(4):
+        if(currentTableFrequencies[y] == lowestCurrentCount):
+          updateIndices.append(y)
+      
+      for num in updateIndices:
+        if(num == 0):
+          hashTable1[incrementSlots[0]] += 1
+        elif(num == 1):
+          hashTable2[incrementSlots[1]] += 1
+        elif(num == 2):
+          hashTable3[incrementSlots[2]] += 1
+        elif(num == 3):
+          hashTable4[incrementSlots[3]] += 1
+      
+  return nonIncreasingOrder(hashTable1, hashTable2, hashTable3, hashTable4, i)
+
 
 def countMinSketch(i):
   dataStream = createDataStream()
@@ -201,7 +301,6 @@ def countMinSketch(i):
         
         
         #Calculate the MD5 score of the resulting string
-        
 
         hexHash = hashlib.md5(newX).hexdigest()
         
@@ -265,6 +364,21 @@ def callerFunction():
   print "Non Decreasing Order:"
   print sum(lastNumFrequencyGuess) / float(len(lastNumFrequencyGuess))
   print sum(numHeavyHitters) / float(len(numHeavyHitters))
+
+
+  lastNumFrequencyGuess = []
+  numHeavyHitters = []
+  for x in range(1, 11):
+    minFreq9050, heavyHittersClub = countMinSketchDecreasing(x)
+    lastNumFrequencyGuess.append(minFreq9050)
+    numHeavyHitters.append(len(set(heavyHittersClub)))
+    
+  #print the value averaged over the 10 trials
+  print "Non Increasing Order:"
+  print sum(lastNumFrequencyGuess) / float(len(lastNumFrequencyGuess))
+  print sum(numHeavyHitters) / float(len(numHeavyHitters))
+
+
 
   lastNumFrequencyGuess = []
   numHeavyHitters = []
