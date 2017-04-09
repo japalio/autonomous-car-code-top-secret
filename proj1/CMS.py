@@ -311,7 +311,7 @@ def countMinSketch(i):
     #for each of the 4 independent hash tables
     x = numFrequencyPair[0]
     frequency = numFrequencyPair[1]
-  
+    print x
 
     for j in range(4):
 
@@ -327,7 +327,7 @@ def countMinSketch(i):
       #incrementSlot is the decimal value 
       byteArray = bytearray.fromhex(hexHash)
       incrementSlot = byteArray[j + 1]
-      
+    
       
       #increment the count 
       if(j == 0):

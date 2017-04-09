@@ -62,7 +62,7 @@ def nonDecreasingOrder(hashTable1, hashTable2, hashTable3, hashTable4, i):
         countFrequencies.append(hashTable4[incrementSlot])
     
     minFrequency = min(countFrequencies)
-    print countFrequencies
+    #print countFrequencies
     if(x == 9050):
       minFreq9050 = minFrequency
     if(isHeavyHitter(minFrequency)):
@@ -86,10 +86,12 @@ def countMinSketch(i):
     #for each of the 4 independent hash tables
     x = numFrequencyPair[0]
     frequency = numFrequencyPair[1]
-    
 
+    
     for inc in range(int(frequency)):
       currentTableFrequencies = []
+      incrementSlots = []
+      # print x
 
       for j in range(4):
 
@@ -105,11 +107,13 @@ def countMinSketch(i):
         #incrementSlot is the decimal value 
         byteArray = bytearray.fromhex(hexHash)
         incrementSlot = byteArray[j + 1]
+        incrementSlots.append(incrementSlot)
         
         
     
         if(j == 0):
           currentTableFrequencies.append(hashTable1[incrementSlot])
+         
         elif(j == 1):
           currentTableFrequencies.append(hashTable2[incrementSlot])
         elif(j == 2):
@@ -117,23 +121,33 @@ def countMinSketch(i):
         elif(j == 3):
           currentTableFrequencies.append(hashTable4[incrementSlot])
 
+        
+
 
       lowestCurrentCount = min(currentTableFrequencies)
+      # print x
+      # print frequency
+      # print currentTableFrequencies
       updateIndices = []
-      for x in range(4):
-      	if(currentTableFrequencies[x] == lowestCurrentCount):
-      		updateIndices.append(x)
+      for y in range(4):
+      	if(currentTableFrequencies[y] == lowestCurrentCount):
+      		updateIndices.append(y)
+      # print "current table frequencies ", currentTableFrequencies
+      # print "hash table before:", hashTable1[incrementSlot], " ", hashTable2[incrementSlot], " ", hashTable3[incrementSlot], " ", hashTable4[incrementSlot]
+      # print "lowest current count: ", lowestCurrentCount
+      # print "update indices: ", updateIndices
 
-
-     	for num in updateIndices:
+      
+      for num in updateIndices:
      		if(num == 0):
-     			hashTable1[incrementSlot] += 1
+     			hashTable1[incrementSlots[0]] += 1
      		elif(num == 1):
-     			hashTable2[incrementSlot] += 1
+     			hashTable2[incrementSlots[1]] += 1
      		elif(num == 2):
-     			hashTable3[incrementSlot] += 1
+     			hashTable3[incrementSlots[2]] += 1
      		elif(num == 3):
-     			hashTable4[incrementSlot] += 1
+     			hashTable4[incrementSlots[3]] += 1
+      # print "hash table after:", hashTable1[incrementSlot], " ", hashTable2[incrementSlot], " ", hashTable3[incrementSlot], " ", hashTable4[incrementSlot]
 
   return nonDecreasingOrder(hashTable1, hashTable2, hashTable3, hashTable4, i)
 
