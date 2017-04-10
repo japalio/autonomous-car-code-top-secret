@@ -4,7 +4,7 @@ import hashlib
 #testing
 
 def isHeavyHitter(minFrequency):
-  if minFrequency > 879:
+  if minFrequency > 880:
     return True
   else:
     return False
