@@ -3,6 +3,7 @@ import math
 import hashlib 
 #testing
 
+randomStream = []
 def isHeavyHitter(minFrequency):
   if minFrequency > 880:
     return True
@@ -86,7 +87,11 @@ def RandomOrder(hashTable1, hashTable2, hashTable3, hashTable4, i):
   return minFreq9050, heavyHittersClub
 
 def countMinSketchRandom(i):
-  dataStream = createRandomDataStream()
+  global randomStream
+  if randomStream == []:
+    randomStream = createRandomDataStream()
+  
+  dataStream = randomStream
   # print dataStream
   hashTable1 = [0]*256
   hashTable2 = [0]*256

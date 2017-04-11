@@ -7,6 +7,9 @@ import hashlib
 import math
 
 
+randomStream = []
+
+
 def calculateHeavyHitters():
   totalNumElements = 0
   heavyHitters = []
@@ -78,7 +81,11 @@ def isHeavyHitter(minFrequency):
     return False
 
 def RandomOrder(hashTable1, hashTable2, hashTable3, hashTable4, i):
-  dataStream = createRandomDataStream()
+  global randomStream
+  if randomStream == []:
+    randomStream = createRandomDataStream()
+  
+  dataStream = randomStream
   minFreq9050 = None
   heavyHittersClub = []
 
