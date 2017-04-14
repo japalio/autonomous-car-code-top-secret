@@ -1,14 +1,17 @@
 import csv 
 import numpy as np
 from scipy.sparse import csr_matrix 
-import sklearn.metrics
-from sklearn.metrics import pairwise_distances
-from scipy.spatial.distance import cosine
+
+
+
+
+
 #import csv file
 def read_data():
 	reader = csv.reader(open('data/data50.csv', 'rb'))
 	#matrix create here
 	# matrix = csr_matrix((1000, 61067))
+	global matrix
 	matrix = np.zeros((1000, 61067))
 	print matrix.shape
 	for row in reader:
@@ -20,6 +23,15 @@ def read_data():
 	matrix = csr_matrix(matrix)
   	return matrix 
 
+def calculateCosineSimilarity(aWordVector, bWordVector):
+	aNorm = np.linalg.norm(aWordVector)
+	bNorm = np.linalg.norm(bWordVector)
+	dotProduct = np.dot(aWordVector, bWordVector)
+	similarity = dotProduct / float((aNorm * bNorm))
+	return similarity
+
+
+
 def similarity(a, articleAIndex, b, articleBIndex):
 	#REMEMBER TO ADJUST FOR 0th INDEXING!!!
 
@@ -27,6 +39,12 @@ def similarity(a, articleAIndex, b, articleBIndex):
 	#for news source a, grab that articleAIndexth word vector 
 	#for news source b, grab the articleBIndexth word vector
 
+	aWordVector = matrix[(a - 1) * 50]
+	bWordVector = matrix[(b - 1) * 50] 
+
+	#cosine similarity calculation:
+	return calculateCosineSimilarity(aWordVector, bWordVector)
+	
 	
 	#return the similarity between these two vectors
 
@@ -47,6 +65,8 @@ def createPlotMatrix():
 	for i in range(0, 20):
 		for j in range(i + 1):
 			averageSimilarity = compareArticles(i, j)
+			plotMatrix[i][j] = averageSimilarity
+			plotMatrix[j][i] = averageSimilarity
 #final output format:
 #list of list of word Ids 
 #list of list of counts 
@@ -80,9 +100,10 @@ def createPlotMatrix():
 # 	#http://stackoverflow.com/questions/16713368/calculate-euclidean-distance-between-two-vector-bag-of-words-in-python
 # 	#basically that^ do we calculate based on intersection?
 
-def calculate_cosine(sparseMatrix):
-	#use CSR matrix? 
-	#dimensions = num articles x num words, where matrix[i][j] = article i's count for word j
+# def calculate_cosine(sparseMatrix):
+# 	#use CSR matrix? 
+# 	#dimensions = num articles x num words, where matrix[i][j] = article i's count for word j
+
 	
 
 	
@@ -91,8 +112,8 @@ def main():
 	sparseMatrix = read_data()
 	# calculate_jaccard()
 	# calculate_l2()
-	calculate_cosine(sparseMatrix)
+	calculate_cosine()
 
-
-main()
+read_data()
+createPlotMatrix()
 
