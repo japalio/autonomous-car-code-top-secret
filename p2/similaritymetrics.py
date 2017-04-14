@@ -1,7 +1,9 @@
 import csv 
 import numpy as np
 from scipy.sparse import csr_matrix 
-
+import sklearn.metrics
+from sklearn.metrics import pairwise_distances
+from scipy.spatial.distance import cosine
 #import csv file
 def read_data():
 	reader = csv.reader(open('data/data50.csv', 'rb'))
@@ -51,15 +53,19 @@ def read_data():
 # 	#http://stackoverflow.com/questions/16713368/calculate-euclidean-distance-between-two-vector-bag-of-words-in-python
 # 	#basically that^ do we calculate based on intersection?
 
-# def calculate_cosine():
-# 	#use CSR matrix? 
-# 	#dimensions = num articles x num words, where matrix[i][j] = article i's count for word j
+def calculate_cosine(sparseMatrix):
+	#use CSR matrix? 
+	#dimensions = num articles x num words, where matrix[i][j] = article i's count for word j
+	
 
+	
 
 def main():
 	sparseMatrix = read_data()
-	calculate_jaccard()
-	calculate_l2()
+	# calculate_jaccard()
+	# calculate_l2()
+	calculate_cosine(sparseMatrix)
 
-read_data()
+
+main()
 
