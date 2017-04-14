@@ -1,19 +1,22 @@
 import csv 
+import numpy as np
+from scipy.sparse import csr_matrix 
 
-wordIds = []
-wordCounts = [] 
 #import csv file
 def read_data():
-  reader = csv.reader(open('data/data50.csv', 'rb'))
-  #matrix create here
-  for row in reader:
-  	#article id = row[0]
-  	#word id = row[1]
-  	#word count = row[2]
-  	#matrix[articleid][wordid] = wordcount 
-
-  	
-
+	reader = csv.reader(open('data/data50.csv', 'rb'))
+	#matrix create here
+	# matrix = csr_matrix((1000, 61067))
+	matrix = np.zeros((1000, 61067))
+	print matrix.shape
+	for row in reader:
+		articleid = int(row[0]) - 1
+		wordid = int(row[1]) - 1
+		wordcount = int(row[2])
+		
+		matrix[articleid][wordid] = wordcount 
+	matrix = csr_matrix(matrix)
+  	return matrix 
 
 #final output format:
 #list of list of word Ids 
@@ -54,7 +57,7 @@ def read_data():
 
 
 def main():
-	wordIds, wordCounts = read_data()
+	sparseMatrix = read_data()
 	calculate_jaccard()
 	calculate_l2()
 
