@@ -6,7 +6,6 @@ from scipy.sparse import csr_matrix
 def read_data():
 	reader = csv.reader(open('data/data50.csv', 'rb'))
 	#matrix create here
-	# matrix = csr_matrix((1000, 61067))
 	global matrix
 	matrix = np.zeros((1000, 61067))
 	for row in reader:
@@ -18,66 +17,41 @@ def read_data():
 	matrix = csr_matrix(matrix)
   	return matrix 
 
-def calculateCosineSimilarity(aWordVector, bWordVector, isSame):
+def calculateCosineSimilarity(aWordVector, bWordVector):
 	aNorm = np.linalg.norm(aWordVector.toarray())
 	bNorm = np.linalg.norm(bWordVector.toarray())
 	dotProduct = np.dot(aWordVector.toarray(), bWordVector.toarray().T)
 	similarity = dotProduct / float((aNorm * bNorm))
-	# if isSame:
-	print similarity
 	return similarity
-
-
 
 def similarity(a, articleAIndex, b, articleBIndex):
 	#REMEMBER TO ADJUST FOR 0th INDEXING!!!
 
-
 	#for news source a, grab that articleAIndexth word vector 
 	#for news source b, grab the articleBIndexth word vector
-
 	aWordVector = matrix[a * 50 + articleAIndex]
 	bWordVector = matrix[b * 50 + articleBIndex] 
-	print('article index a:', a*50)
-	print('article index b:', b*50)
-	if (a == b):
-		passThis = True
-	else:
-		passThis = False 
-	#cosine similarity calculation:
-	return calculateCosineSimilarity(aWordVector, bWordVector, passThis)
-	
-	
-	#return the similarity between these two vectors
+	return calculateCosineSimilarity(aWordVector, bWordVector)
 
 def compareArticles(a, b):
 	averageSim = 0.0
 	for k in range(0, 50):
 		for l in range(0, k + 1):
-			print('k: ', k, ' l: ', l)
 			averageSim += similarity(a, k, b, l)
-
-	# if (a == b):
-	# 	print ('in compare articles')
-	# 	print averageSim
 	averageSim *= 2
 	averageSim /= 2500.0
 	return averageSim
-
-
-
 
 def createPlotMatrix():
 	plotMatrix = np.zeros((20, 20))
 	for i in range(0, 20):
 		for j in range(i + 1):
 			averageSimilarity = compareArticles(i, j)
-			if (i==j):
-				print('average similarity between group',i, ' and ', j, ':')
-				print(averageSimilarity)
 			plotMatrix[i][j] = averageSimilarity
 			plotMatrix[j][i] = averageSimilarity
 	print plotMatrix
+
+
 #final output format:
 #list of list of word Ids 
 #list of list of counts 
@@ -126,6 +100,5 @@ def main():
 	calculate_cosine()
 
 read_data()
-print('hi')
 createPlotMatrix()
 
