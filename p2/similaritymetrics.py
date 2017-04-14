@@ -18,6 +18,33 @@ def read_data():
 	matrix = csr_matrix(matrix)
   	return matrix 
 
+def similarity(a, articleAIndex, b, articleBIndex):
+	#REMEMBER TO ADJUST FOR 0th INDEXING!!!
+
+
+	#for news source a, grab that articleAIndexth word vector 
+	#for news source b, grab the articleBIndexth word vector
+
+	
+	#return the similarity between these two vectors
+
+def compareArticles(a, b):
+	averageSim = 0.0
+	for k in range(0, 50):
+		for l in range(0, k + 1):
+			averageSim += similarity(a, k, b, l)
+	averageSim *= 2
+	averageSim /= 2500
+	return averageSim
+
+
+
+
+def createPlotMatrix():
+	plotMatrix = np.zeros((20, 20))
+	for i in range(0, 20):
+		for j in range(i + 1):
+			averageSimilarity = compareArticles(i, j)
 #final output format:
 #list of list of word Ids 
 #list of list of counts 
