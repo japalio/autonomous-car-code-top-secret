@@ -1,6 +1,7 @@
 import csv 
 import numpy as np
 from scipy.sparse import csr_matrix 
+import math
 
 #import csv file
 def read_data():
@@ -29,7 +30,7 @@ def calculateJaccardSimilarity(aWordVector, bWordVector):
 	return None
 
 def calculateL2Similarity(aWordVector, bWordVector):
-	return np.sum(np.square(np.subtract(aWordVector, bWordVector)))
+	return -1 * math.sqrt(np.sum(np.square(np.subtract(aWordVector.toarray(), bWordVector.toarray()))))
 
 def similarity(a, articleAIndex, b, articleBIndex, similarityCode):
 
@@ -44,7 +45,7 @@ def similarity(a, articleAIndex, b, articleBIndex, similarityCode):
 	if(similarityCode == 1):
 		return calculateJaccardSimilarity(aWordVector, bWordVector)
 	elif(similarityCode == 2):
-		return calculateL2Similiarity(aWordVector, bWordVector)
+		return calculateL2Similarity(aWordVector, bWordVector)
 	else:
 		#cosine similarity calculation:
 		return calculateCosineSimilarity(aWordVector, bWordVector)
@@ -121,10 +122,5 @@ def main():
 	calculate_cosine()
 
 read_data()
-<<<<<<< HEAD
-createPlotMatrix()
-=======
-print('hi')
-createPlotMatrix(3)
->>>>>>> 1a980e1ccef6d610b5cbf709b495d093aef54f3d
+createPlotMatrix(2)
 
