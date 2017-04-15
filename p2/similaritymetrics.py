@@ -155,7 +155,27 @@ def makeHeatMap(data, names, color, outputFileName):
 # 	#use CSR matrix? 
 # 	#dimensions = num articles x num words, where matrix[i][j] = article i's count for word j
 
+def greatestSimiliarity(hostArticle):
+	currMax = 0.0
+	maxArticle = None
+
+	for article in range(len(matrix)):
+		if(hostArticle != article):
+			similarity = calculateCosineSimilarity(matrix[hostArticle], matrix[article])
+			if(similarity > currMax):
+				currMax = similarity
+				maxArticle = article
+	return maxArticle
+
 	
+def baselineClassification():
+	nearestNeighborCount = [[0]*20] * 20
+	
+	for article in range(len(matrix)):
+		y = greatestSimiliarity(article)
+		nearestNeighborCount[article/50][y/50] += 1
+		
+
 
 	
 
