@@ -19,6 +19,13 @@ def read_data():
 	matrix = csr_matrix(matrix)
   	return matrix 
 
+def readGroupNames():
+	reader = csv.reader(open('data/groups.csv','rb'))
+	global groupNames 
+	groupNames = []
+	for row in reader:
+		groupNames.append(row[0])
+		
 def calculateCosineSimilarity(aWordVector, bWordVector):
 	aNorm = np.linalg.norm(aWordVector.toarray())
 	bNorm = np.linalg.norm(bWordVector.toarray())
@@ -129,5 +136,9 @@ def main():
 read_data()
 
 createPlotMatrix(1)
+
+# createPlotMatrix(1)
+
+
 
 
