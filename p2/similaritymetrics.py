@@ -5,8 +5,7 @@ import math
 import matplotlib.pyplot as plt
 import warnings 
 
-#import csv file
-#testing
+#import csv file, read into global variable 'matrix'
 def read_data():
 	reader = csv.reader(open('data/data50.csv', 'rb'))
 	#matrix create here
@@ -21,6 +20,7 @@ def read_data():
 	matrix = csr_matrix(matrix)
   	return matrix 
 
+#read group  names into global variable 'groupNames'
 def readGroupNames():
 	reader = csv.reader(open('data/groups.csv','rb'))
 	global groupNames 
@@ -29,6 +29,7 @@ def readGroupNames():
 		groupNames.append(row[0])
 	return groupNames
 		
+#given two bag of word vectors in CSR format, calculate cosine similarity 
 def calculateCosineSimilarity(aWordVector, bWordVector):
 	aNorm = np.linalg.norm(aWordVector.toarray())
 	bNorm = np.linalg.norm(bWordVector.toarray())
@@ -36,18 +37,17 @@ def calculateCosineSimilarity(aWordVector, bWordVector):
 	similarity = dotProduct / float((aNorm * bNorm))
 	return similarity
 
+#given two bag of word vectors in CSR format, calculate Jaccard similarity 
 def calculateJaccardSimilarity(aWordVector, bWordVector):
 	return np.sum(np.minimum(aWordVector.toarray(),bWordVector.toarray()))/np.sum(np.maximum(aWordVector.toarray(), bWordVector.toarray()))
 
+#given two bag of word vectors in CSR format, calculate L2 similarity 
 def calculateL2Similarity(aWordVector, bWordVector):
-
 	return -1.0 * math.sqrt(np.sum(np.square(np.subtract(aWordVector.toarray(), bWordVector.toarray()))))
 
 
+#given which groups and the index of the articles within the groups, return similarity based on similarity code 
 def similarity(a, articleAIndex, b, articleBIndex, similarityCode):
-
-	#REMEMBER TO ADJUST FOR 0th INDEXING!!!
-
 	#for news source a, grab that articleAIndexth word vector 
 	#for news source b, grab the articleBIndexth word vector
 	aWordVector = matrix[a * 50 + articleAIndex]
@@ -59,13 +59,9 @@ def similarity(a, articleAIndex, b, articleBIndex, similarityCode):
 	elif(similarityCode == 2):
 		return calculateL2Similarity(aWordVector, bWordVector)
 	else:
-		#cosine similarity calculation:
 		return calculateCosineSimilarity(aWordVector, bWordVector)
-	
-	
-	#return the similarity between these two vectors
 
-
+#compare all articles between groups a and b based on similarity metric 
 def compareArticles(a, b, similarityCode):
 	averageSim = 0.0
 	for k in range(0, 50):
@@ -75,7 +71,7 @@ def compareArticles(a, b, similarityCode):
 	averageSim /= float(2500.0) 
 	return averageSim
 
-
+#create 20x20 plot, where each entry corresponds to average similarity over all ways of pairing up one article from A with one article from B.
 def createPlotMatrix(similarityCode):
 	plotMatrix = np.zeros((20, 20))
 	for i in range(0, 20):
@@ -83,10 +79,6 @@ def createPlotMatrix(similarityCode):
 			averageSimilarity = compareArticles(i, j, similarityCode)
 			plotMatrix[i][j] = averageSimilarity
 			plotMatrix[j][i] = averageSimilarity
-
-	# fig, ax = plt.subplots()
-	# heatmap = ax.pcolor(plotMatrix, cmap=plt.cm.Blues, alpha=0.8)
-	groupNames = readGroupNames()
 	makeHeatMap(plotMatrix, groupNames, plt.cm.Blues, 'heatMap1')
 
 def makeHeatMap(data, names, color, outputFileName):
@@ -118,48 +110,10 @@ def makeHeatMap(data, names, color, outputFileName):
 		plt.close()
 
 
-#final output format:
-#list of list of word Ids 
-#list of list of counts 
-#index of list in big list is the article ID, article ID 1-50 corresponds to group ID 1, 51-100 = group Id 2, etc.
-
-#FML JK 
-# https://piazza.com/class/j11oni3tp2f3wd?cid=55
-
-#calculating similarity:
-	#calculations between articles based on group #; 20x20 matrix based on average 
-
-# def calculate_jaccard():
-# 	#matrix of 20x20 
-
-# 	#for news group in [1,20]:
-# 		#for news group in [1,20]:
-# 			#keep a running sum  = 0
-# 			#for articles [1,50] in news group A:
-# 				#for articles [1,50] in news group B:
-# 					#calculate similarity between article from group A, article from group B
-# 						#to calculate similarity: figure out words in common, divide by total # of words 
-# 							#intersect word ids / union word ids 
-# 					#add similarity to total running sum
-
-# 			#avg similarity for group A and B = sum / (50*50)
-# 			#update matrix with similarity 
-# 			#also account FOR SYMMTETRY OF TABLE
-
-
-# def calculate_l2():
-# 	#http://stackoverflow.com/questions/16713368/calculate-euclidean-distance-between-two-vector-bag-of-words-in-python
-# 	#basically that^ do we calculate based on intersection?
-
-# def calculate_cosine(sparseMatrix):
-# 	#use CSR matrix? 
-# 	#dimensions = num articles x num words, where matrix[i][j] = article i's count for word j
-
-
+#used for baseline calculation, find the article with the max cosine similarity score to the current article 
 def greatestSimiliarity(hostArticle):
 	currMax = 0.0
 	maxArticle = None
-
 	for article in range(matrix.shape[0]):
 		if(hostArticle != article):
 			similarity = calculateCosineSimilarity(matrix[hostArticle], matrix[article])
@@ -169,34 +123,32 @@ def greatestSimiliarity(hostArticle):
 	return maxArticle
 
 	
+#used to compare cosine similarity scores between every article
 def baselineClassification():
 
 	nearestNeighborCount = np.zeros	((20,20))
-	
 	for article in range(matrix.shape[0]):
 		y = greatestSimiliarity(article)
 		nearestNeighborCount[article/50, y/50] += 1
+<<<<<<< HEAD
 		# print('getting incremented: ', article/50, y/50)
 		# print nearestNeighborCount
 
 	print nearestNeighborCount
+=======
+	# makeHeatMap(nearestNeighborCount, groupNames, plt.cm.Blues, 'heatMap1')
+	averageClassificationPrecision(nearestNeighborCount)
+>>>>>>> 6bfbfd22feac9d248c4134cf559026effc2d0500
 		
 
-
-
-	
-
-def main():
-	sparseMatrix = read_data()
-	# calculate_jaccard()
-	# calculate_l2()
-	calculate_cosine()
+def averageClassificationPrecision(m):
+	averageErrors = 0
+	for i in range(m.shape[0]):
+		averageErrors += m[i,i]
+	print averageErrors/float(1000)
 
 read_data()
 readGroupNames()
-
-# createPlotMatrix(1)
-
 baselineClassification()
 
 # createPlotMatrix(1)
