@@ -31,6 +31,11 @@ def calculateJaccardSimilarity(aWordVector, bWordVector):
 	return None
 
 def calculateL2Similarity(aWordVector, bWordVector):
+	# print aWordVector
+	# print bWordVector
+	print np.subtract(aWordVector, bWordVector)
+
+	print np.subtract(aWordVector, bWordVector).shape
 	return np.sum(np.square(np.subtract(aWordVector, bWordVector)))
 
 def similarity(a, articleAIndex, b, articleBIndex, similarityCode):
@@ -46,7 +51,7 @@ def similarity(a, articleAIndex, b, articleBIndex, similarityCode):
 	if(similarityCode == 1):
 		return calculateJaccardSimilarity(aWordVector, bWordVector)
 	elif(similarityCode == 2):
-		return calculateL2Similiarity(aWordVector, bWordVector)
+		return calculateL2Similarity(aWordVector, bWordVector)
 	else:
 		#cosine similarity calculation:
 		return calculateCosineSimilarity(aWordVector, bWordVector)
@@ -129,5 +134,5 @@ def main():
 
 read_data()
 print('hi')
-createPlotMatrix(3)
+createPlotMatrix(2)
 
