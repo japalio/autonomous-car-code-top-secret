@@ -130,15 +130,10 @@ def baselineClassification():
 	for article in range(matrix.shape[0]):
 		y = greatestSimiliarity(article)
 		nearestNeighborCount[article/50, y/50] += 1
-<<<<<<< HEAD
-		# print('getting incremented: ', article/50, y/50)
-		# print nearestNeighborCount
 
-	print nearestNeighborCount
-=======
 	# makeHeatMap(nearestNeighborCount, groupNames, plt.cm.Blues, 'heatMap1')
 	averageClassificationPrecision(nearestNeighborCount)
->>>>>>> 6bfbfd22feac9d248c4134cf559026effc2d0500
+
 		
 
 def averageClassificationPrecision(m):
