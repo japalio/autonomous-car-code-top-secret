@@ -83,6 +83,7 @@ def createPlotMatrix(similarityCode):
 			plotMatrix[j][i] = averageSimilarity
 	fig, ax = plt.subplots()
 	heatmap = ax.pcolor(plotMatrix, cmap=plt.cm.Blues, alpha=0.8)
+	plt.show()
 
 
 
