@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 import warnings 
 
 #import csv file
+#testing
 def read_data():
 	reader = csv.reader(open('data/data50.csv', 'rb'))
 	#matrix create here
@@ -82,6 +83,7 @@ def createPlotMatrix(similarityCode):
 			averageSimilarity = compareArticles(i, j, similarityCode)
 			plotMatrix[i][j] = averageSimilarity
 			plotMatrix[j][i] = averageSimilarity
+
 	# fig, ax = plt.subplots()
 	# heatmap = ax.pcolor(plotMatrix, cmap=plt.cm.Blues, alpha=0.8)
 	groupNames = readGroupNames()
@@ -104,6 +106,7 @@ def makeHeatMap(data, names, color, outputFileName):
 		# want a more natural, table-like display
 		ax.invert_yaxis()
 		ax.xaxis.tick_top()
+
 
 		ax.set_xticklabels(range(1, 21))
 		ax.set_yticklabels(names)
@@ -151,6 +154,28 @@ def makeHeatMap(data, names, color, outputFileName):
 # def calculate_cosine(sparseMatrix):
 # 	#use CSR matrix? 
 # 	#dimensions = num articles x num words, where matrix[i][j] = article i's count for word j
+
+
+def greatestSimiliarity(hostArticle):
+	currMax = 0.0
+	maxArticle = None
+
+	for article in range(len(matrix)):
+		if(hostArticle != article):
+			similarity = calculateCosineSimilarity(matrix[hostArticle], matrix[article])
+			if(similarity > currMax):
+				currMax = similarity
+				maxArticle = article
+	return maxArticle
+
+	
+def baselineClassification():
+	nearestNeighborCount = [[0]*20] * 20
+	
+	for article in range(len(matrix)):
+		y = greatestSimiliarity(article)
+		nearestNeighborCount[article/50][y/50] += 1
+		
 
 
 
