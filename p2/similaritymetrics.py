@@ -3,8 +3,10 @@ import numpy as np
 from scipy.sparse import csr_matrix 
 import math
 import matplotlib.pyplot as plt
+import warnings 
 
 #import csv file
+#testing
 def read_data():
 	reader = csv.reader(open('data/data50.csv', 'rb'))
 	#matrix create here
@@ -25,13 +27,13 @@ def readGroupNames():
 	groupNames = []
 	for row in reader:
 		groupNames.append(row[0])
+	return groupNames
 		
 def calculateCosineSimilarity(aWordVector, bWordVector):
 	aNorm = np.linalg.norm(aWordVector.toarray())
 	bNorm = np.linalg.norm(bWordVector.toarray())
 	dotProduct = np.dot(aWordVector.toarray(), bWordVector.toarray().T)
 	similarity = dotProduct / float((aNorm * bNorm))
-
 	return similarity
 
 def calculateJaccardSimilarity(aWordVector, bWordVector):
@@ -39,7 +41,7 @@ def calculateJaccardSimilarity(aWordVector, bWordVector):
 
 def calculateL2Similarity(aWordVector, bWordVector):
 
-	return -1 * math.sqrt(np.sum(np.square(np.subtract(aWordVector.toarray(), bWordVector.toarray()))))
+	return -1.0 * math.sqrt(np.sum(np.square(np.subtract(aWordVector.toarray(), bWordVector.toarray()))))
 
 
 def similarity(a, articleAIndex, b, articleBIndex, similarityCode):
@@ -70,7 +72,7 @@ def compareArticles(a, b, similarityCode):
 		for l in range(0, k + 1):
 			averageSim += similarity(a, k, b, l, similarityCode)
 	averageSim *= 2
-	averageSim /= 2500.0
+	averageSim /= float(2500.0) 
 	return averageSim
 
 
@@ -81,10 +83,39 @@ def createPlotMatrix(similarityCode):
 			averageSimilarity = compareArticles(i, j, similarityCode)
 			plotMatrix[i][j] = averageSimilarity
 			plotMatrix[j][i] = averageSimilarity
-	fig, ax = plt.subplots()
-	heatmap = ax.pcolor(plotMatrix, cmap=plt.cm.Blues, alpha=0.8)
-	plt.show()
 
+	# fig, ax = plt.subplots()
+	# heatmap = ax.pcolor(plotMatrix, cmap=plt.cm.Blues, alpha=0.8)
+	groupNames = readGroupNames()
+	makeHeatMap(plotMatrix, groupNames, plt.cm.Blues, 'heatMap1')
+
+def makeHeatMap(data, names, color, outputFileName):
+	#to catch "falling back to Agg" warning
+	with warnings.catch_warnings():
+   		warnings.simplefilter("ignore")
+		#code source: http://stackoverflow.com/questions/14391959/heatmap-in-matplotlib-with-pcolor
+		fig, ax = plt.subplots()
+		#create the map w/ color bar legend
+		heatmap = ax.pcolor(data, cmap=color)
+		cbar = plt.colorbar(heatmap)
+
+		# put the major ticks at the middle of each cell
+		ax.set_xticks(np.arange(data.shape[0])+0.5, minor=False)
+		ax.set_yticks(np.arange(data.shape[1])+0.5, minor=False)
+
+		# want a more natural, table-like display
+		ax.invert_yaxis()
+		ax.xaxis.tick_top()
+
+
+		ax.set_xticklabels(range(1, 21))
+		ax.set_yticklabels(names)
+
+		plt.tight_layout()
+
+		plt.savefig(outputFileName, format = 'png')
+		plt.show()
+		plt.close()
 
 
 #final output format:
@@ -135,7 +166,7 @@ def main():
 	calculate_cosine()
 
 read_data()
-
+readGroupNames()
 createPlotMatrix(1)
 
 # createPlotMatrix(1)
