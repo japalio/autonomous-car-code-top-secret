@@ -155,6 +155,7 @@ def makeHeatMap(data, names, color, outputFileName):
 # 	#use CSR matrix? 
 # 	#dimensions = num articles x num words, where matrix[i][j] = article i's count for word j
 
+
 def greatestSimiliarity(hostArticle):
 	currMax = 0.0
 	maxArticle = None
@@ -169,23 +170,18 @@ def greatestSimiliarity(hostArticle):
 
 	
 def baselineClassification():
-	nearestNeighborCount = np.array((20,20))
-	# nearestNeighborCount[0][0] = 5
-	
 
-	# print nearestNeighborCount[0][0]
-	# print nearestNeighborCount[1][0]
-	print nearestNeighborCount[0][1]
+	nearestNeighborCount = np.zeros	((20,20))
 	
 	for article in range(matrix.shape[0]):
 		y = greatestSimiliarity(article)
-		# print article, y
+		nearestNeighborCount[article/50, y/50] += 1
+		# print('getting incremented: ', article/50, y/50)
+		# print nearestNeighborCount
 
-		# print article/50, y/50
-		nearestNeighborCount[article/50][y/50] += 1
-		
 	print nearestNeighborCount
 		
+
 
 
 	
@@ -198,7 +194,9 @@ def main():
 
 read_data()
 readGroupNames()
+
 # createPlotMatrix(1)
+
 baselineClassification()
 
 # createPlotMatrix(1)
