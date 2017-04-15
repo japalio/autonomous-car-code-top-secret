@@ -22,31 +22,52 @@ def calculateCosineSimilarity(aWordVector, bWordVector):
 	bNorm = np.linalg.norm(bWordVector.toarray())
 	dotProduct = np.dot(aWordVector.toarray(), bWordVector.toarray().T)
 	similarity = dotProduct / float((aNorm * bNorm))
+
 	return similarity
 
-def similarity(a, articleAIndex, b, articleBIndex):
+def calculateJaccardSimilarity(aWordVector, bWordVector):
+	return None
+
+def calculateL2Similarity(aWordVector, bWordVector):
+	return np.sum(np.square(np.subtract(aWordVector, bWordVector)))
+
+def similarity(a, articleAIndex, b, articleBIndex, similarityCode):
+
 	#REMEMBER TO ADJUST FOR 0th INDEXING!!!
 
 	#for news source a, grab that articleAIndexth word vector 
 	#for news source b, grab the articleBIndexth word vector
 	aWordVector = matrix[a * 50 + articleAIndex]
 	bWordVector = matrix[b * 50 + articleBIndex] 
-	return calculateCosineSimilarity(aWordVector, bWordVector)
 
-def compareArticles(a, b):
+
+	if(similarityCode == 1):
+		return calculateJaccardSimilarity(aWordVector, bWordVector)
+	elif(similarityCode == 2):
+		return calculateL2Similiarity(aWordVector, bWordVector)
+	else:
+		#cosine similarity calculation:
+		return calculateCosineSimilarity(aWordVector, bWordVector)
+	
+	
+	#return the similarity between these two vectors
+
+
+def compareArticles(a, b, similarityCode):
 	averageSim = 0.0
 	for k in range(0, 50):
 		for l in range(0, k + 1):
-			averageSim += similarity(a, k, b, l)
+			averageSim += similarity(a, k, b, l, similarityCode)
 	averageSim *= 2
 	averageSim /= 2500.0
 	return averageSim
 
-def createPlotMatrix():
+
+def createPlotMatrix(similarityCode):
 	plotMatrix = np.zeros((20, 20))
 	for i in range(0, 20):
 		for j in range(i + 1):
-			averageSimilarity = compareArticles(i, j)
+			averageSimilarity = compareArticles(i, j, similarityCode)
 			plotMatrix[i][j] = averageSimilarity
 			plotMatrix[j][i] = averageSimilarity
 	print plotMatrix
@@ -100,5 +121,10 @@ def main():
 	calculate_cosine()
 
 read_data()
+<<<<<<< HEAD
 createPlotMatrix()
+=======
+print('hi')
+createPlotMatrix(3)
+>>>>>>> 1a980e1ccef6d610b5cbf709b495d093aef54f3d
 
