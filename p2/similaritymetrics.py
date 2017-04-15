@@ -175,6 +175,7 @@ def baselineClassification():
 	for article in range(matrix.shape[0]):
 		y = greatestSimiliarity(article)
 		nearestNeighborCount[article/50][y/50] += 1
+	print nearestNeighborCount
 		
 
 
@@ -189,6 +190,9 @@ def main():
 
 read_data()
 readGroupNames()
+
+# createPlotMatrix(1)
+
 baselineClassification()
 
 # createPlotMatrix(1)
