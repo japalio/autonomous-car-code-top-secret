@@ -152,7 +152,7 @@ def makeHeatMap(data, names, color, outputFileName):
 # 	#use CSR matrix? 
 # 	#dimensions = num articles x num words, where matrix[i][j] = article i's count for word j
 
-	
+
 
 	
 
@@ -164,7 +164,7 @@ def main():
 
 read_data()
 readGroupNames()
-createPlotMatrix(1)
+createPlotMatrix(3)
 
 # createPlotMatrix(1)
 
