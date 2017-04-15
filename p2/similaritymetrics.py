@@ -27,7 +27,7 @@ def calculateCosineSimilarity(aWordVector, bWordVector):
 	return similarity
 
 def calculateJaccardSimilarity(aWordVector, bWordVector):
-	return None
+	return np.sum(np.minimum(aWordVector.toarray(),bWordVector.toarray()))/np.sum(np.maximum(aWordVector.toarray(), bWordVector.toarray()))
 
 def calculateL2Similarity(aWordVector, bWordVector):
 	return -1 * math.sqrt(np.sum(np.square(np.subtract(aWordVector.toarray(), bWordVector.toarray()))))
@@ -122,5 +122,5 @@ def main():
 	calculate_cosine()
 
 read_data()
-createPlotMatrix(2)
+createPlotMatrix(1)
 
