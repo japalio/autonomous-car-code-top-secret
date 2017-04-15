@@ -2,6 +2,7 @@ import csv
 import numpy as np
 from scipy.sparse import csr_matrix 
 import math
+import matplotlib.pyplot as plt
 
 #import csv file
 def read_data():
@@ -73,7 +74,9 @@ def createPlotMatrix(similarityCode):
 			averageSimilarity = compareArticles(i, j, similarityCode)
 			plotMatrix[i][j] = averageSimilarity
 			plotMatrix[j][i] = averageSimilarity
-	print plotMatrix
+	fig, ax = plt.subplots()
+	heatmap = ax.pcolor(plotMatrix, cmap=plt.cm.Blues, alpha=0.8)
+
 
 
 #final output format:
