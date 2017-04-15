@@ -19,8 +19,16 @@ def read_data():
 	matrix = csr_matrix(matrix)
 	return matrix 
 
-def calculateCosineSimilarity(aWordVector, bWordVector):
+#read group  names into global variable 'groupNames'
+def readGroupNames():
+	reader = csv.reader(open('data/groups.csv','rb'))
+	global groupNames 
+	groupNames = []
+	for row in reader:
+		groupNames.append(row[0])
+	return groupNames
 
+def calculateCosineSimilarity(aWordVector, bWordVector):
 	aNorm = np.linalg.norm(aWordVector)
 	bNorm = np.linalg.norm(bWordVector)
 	dotProduct = np.dot(aWordVector, bWordVector.T)
@@ -30,7 +38,6 @@ def calculateCosineSimilarity(aWordVector, bWordVector):
 def greatestSimiliarity(hostArticle, matrix):
 	currMax = 0.0
 	maxArticle = None
-
 	for article in range(matrix.shape[0]):
 		if(hostArticle != article):
 			similarity = calculateCosineSimilarity(matrix[hostArticle], matrix[article])
@@ -42,17 +49,13 @@ def greatestSimiliarity(hostArticle, matrix):
 	
 def baselineClassification(matrix):
 	nearestNeighborCount = np.zeros	((20,20))
-	
 	for article in range(matrix.shape[0]):
 		y = greatestSimiliarity(article, matrix)
 		nearestNeighborCount[article/50, y/50] += 1
-		# print('getting incremented: ', article/50, y/50)
-		# print nearestNeighborCount
 	print nearestNeighborCount
+	makeHeatMap(nearestNeighborCount, groupNames, plt.cm.Blues, 'heatMap1')
 	averageClassificationError(nearestNeighborCount)
 		
-
-
 
 	
 
@@ -105,13 +108,13 @@ def dimensionReductionFunction(dimension):
 
 	reducedMatrix = np.array(reducedList)
 	reducedMatrix = np.reshape(reducedMatrix, (1000,dimension))
-	print reducedMatrix
+	# print reducedMatrix
 
 	#calculate cosine similarity between articles in reducedMatrix
 	baselineClassification(reducedMatrix)
 
 
-def averageClassificationError(matrix):
+def averageClassificationPrecision(matrix):
 	averageErrors = 0
 	for i in range(matrix.shape[0]):
 		averageErrors += matrix[i,i]
@@ -121,4 +124,5 @@ def averageClassificationError(matrix):
 
 
 read_data()
+readGroupNames()
 dimensionReductionFunction(10)

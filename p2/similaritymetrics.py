@@ -129,9 +129,15 @@ def baselineClassification():
 	for article in range(matrix.shape[0]):
 		y = greatestSimiliarity(article)
 		nearestNeighborCount[article/50, y/50] += 1
-	print nearestNeighborCount
-	makeHeatMap(nearestNeighborCount, groupNames, plt.cm.Blues, 'heatMap1')
+	# makeHeatMap(nearestNeighborCount, groupNames, plt.cm.Blues, 'heatMap1')
+	averageClassificationPrecision(nearestNeighborCount)
 		
+
+def averageClassificationPrecision(m):
+	averageErrors = 0
+	for i in range(m.shape[0]):
+		averageErrors += m[i,i]
+	print averageErrors/float(1000)
 
 read_data()
 readGroupNames()
