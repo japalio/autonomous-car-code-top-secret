@@ -1,12 +1,12 @@
 import csv 
 import numpy as np
 from scipy.sparse import csr_matrix 
+import math
 
 #import csv file
 def read_data():
 	reader = csv.reader(open('data/data50.csv', 'rb'))
 	#matrix create here
-	# matrix = csr_matrix((1000, 61067))
 	global matrix
 	matrix = np.zeros((1000, 61067))
 	for row in reader:
@@ -23,30 +23,26 @@ def calculateCosineSimilarity(aWordVector, bWordVector):
 	bNorm = np.linalg.norm(bWordVector.toarray())
 	dotProduct = np.dot(aWordVector.toarray(), bWordVector.toarray().T)
 	similarity = dotProduct / float((aNorm * bNorm))
-	# if isSame:
-	# print similarity
+
 	return similarity
 
 def calculateJaccardSimilarity(aWordVector, bWordVector):
 	return None
 
 def calculateL2Similarity(aWordVector, bWordVector):
-	# print aWordVector
-	# print bWordVector
-	print np.subtract(aWordVector, bWordVector)
 
-	print np.subtract(aWordVector, bWordVector).shape
-	return np.sum(np.square(np.subtract(aWordVector, bWordVector)))
+	return -1 * math.sqrt(np.sum(np.square(np.subtract(aWordVector.toarray(), bWordVector.toarray()))))
+
 
 def similarity(a, articleAIndex, b, articleBIndex, similarityCode):
-	#REMEMBER TO ADJUST FOR 0th INDEXING!!!
 
+	#REMEMBER TO ADJUST FOR 0th INDEXING!!!
 
 	#for news source a, grab that articleAIndexth word vector 
 	#for news source b, grab the articleBIndexth word vector
-
 	aWordVector = matrix[a * 50 + articleAIndex]
 	bWordVector = matrix[b * 50 + articleBIndex] 
+
 
 	if(similarityCode == 1):
 		return calculateJaccardSimilarity(aWordVector, bWordVector)
@@ -59,21 +55,15 @@ def similarity(a, articleAIndex, b, articleBIndex, similarityCode):
 	
 	#return the similarity between these two vectors
 
+
 def compareArticles(a, b, similarityCode):
 	averageSim = 0.0
 	for k in range(0, 50):
 		for l in range(0, k + 1):
-			# print('k: ', k, ' l: ', l)
 			averageSim += similarity(a, k, b, l, similarityCode)
-
-	# if (a == b):
-	# 	print ('in compare articles')
-	# 	print averageSim
 	averageSim *= 2
 	averageSim /= 2500.0
 	return averageSim
-
-
 
 
 def createPlotMatrix(similarityCode):
@@ -81,10 +71,11 @@ def createPlotMatrix(similarityCode):
 	for i in range(0, 20):
 		for j in range(i + 1):
 			averageSimilarity = compareArticles(i, j, similarityCode)
-
 			plotMatrix[i][j] = averageSimilarity
 			plotMatrix[j][i] = averageSimilarity
 	print plotMatrix
+
+
 #final output format:
 #list of list of word Ids 
 #list of list of counts 
@@ -133,6 +124,6 @@ def main():
 	calculate_cosine()
 
 read_data()
-print('hi')
+
 createPlotMatrix(2)
 
