@@ -169,11 +169,21 @@ def greatestSimiliarity(hostArticle):
 
 	
 def baselineClassification():
-	nearestNeighborCount = [[0]*20] * 20
+	nearestNeighborCount = np.array((20,20))
+	# nearestNeighborCount[0][0] = 5
+	
+
+	# print nearestNeighborCount[0][0]
+	# print nearestNeighborCount[1][0]
+	print nearestNeighborCount[0][1]
 	
 	for article in range(matrix.shape[0]):
 		y = greatestSimiliarity(article)
+		# print article, y
+
+		# print article/50, y/50
 		nearestNeighborCount[article/50][y/50] += 1
+		
 	print nearestNeighborCount
 		
 
