@@ -49,6 +49,7 @@ def baselineClassification(matrix):
 		# print('getting incremented: ', article/50, y/50)
 		# print nearestNeighborCount
 	print nearestNeighborCount
+	averageClassificationError(nearestNeighborCount)
 		
 
 
@@ -103,17 +104,21 @@ def dimensionReductionFunction(dimension):
 
 
 	reducedMatrix = np.array(reducedList)
-	reducedMatrix = np.reshape(reducedMatrix, (1000,10))
+	reducedMatrix = np.reshape(reducedMatrix, (1000,dimension))
 	print reducedMatrix
 
 	#calculate cosine similarity between articles in reducedMatrix
 	baselineClassification(reducedMatrix)
 
 
-
+def averageClassificationError(matrix):
+	averageErrors = 0
+	for i in range(matrix.shape[0]):
+		averageErrors += matrix[i,i]
+	print averageErrors/float(1000)
 
 
 
 
 read_data()
-dimensionReductionFunction(25)
+dimensionReductionFunction(10)
