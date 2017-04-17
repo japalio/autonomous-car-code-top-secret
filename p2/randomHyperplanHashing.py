@@ -16,7 +16,18 @@ def read_data():
 		wordcount = int(row[2])
 		
 		originalMatrix[articleid][wordid] = wordcount 
-	originalMatrix = csr_matrix(originalMatrix)
+	newMatrix = np.zeros((1000, 61067))
+
+	#NORMALIZE THE ORIGINAL MATRIX 
+	for articleId in range(originalMatrix.shape[0]):
+		#divide each article by its norm
+		article = originalMatrix[articleId]
+		norm = np.linalg.norm(article)
+		newArticle = article / float(norm)
+		newMatrix[articleId] = newArticle
+	originalMatrix = newMatrix
+
+
 
 def createHashTables(dimension):
 	global originalHash
@@ -50,10 +61,9 @@ def createHashTables(dimension):
 				originalHash[x][key].append(articleId)
 
 def calculateCosineSimilarity(aWordVector, bWordVector):
-	aNorm = np.linalg.norm(aWordVector)
-	bNorm = np.linalg.norm(bWordVector)
-	dotProduct = np.dot(aWordVector, bWordVector.T)
-	similarity = dotProduct / float((aNorm * bNorm))
+
+	#already normalized, just need dot product
+	similarity = np.dot(aWordVector, bWordVector.T)
 	return similarity
 
 
