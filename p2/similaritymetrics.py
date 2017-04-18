@@ -65,9 +65,9 @@ def similarity(a, articleAIndex, b, articleBIndex, similarityCode):
 def compareArticles(a, b, similarityCode):
 	averageSim = 0.0
 	for k in range(0, 50):
-		for l in range(0, k + 1):
+		for l in range(0, 50):
 			averageSim += similarity(a, k, b, l, similarityCode)
-	averageSim *= 2
+	# averageSim *= 2
 	averageSim /= float(2500.0) 
 	return averageSim
 
@@ -144,9 +144,9 @@ def averageClassificationPrecision(m):
 
 read_data()
 readGroupNames()
-baselineClassification()
+# baselineClassification()
 
-# createPlotMatrix(1)
+createPlotMatrix(3)
 
 
 

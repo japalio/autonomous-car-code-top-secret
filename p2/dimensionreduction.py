@@ -94,6 +94,7 @@ def dimensionReductionFunction(dimension):
 	for i in range(dimension):
 		rand = np.random.normal(0, 1.0, 61067)
 		randList.append(list(rand))
+		
 
 	M = np.array(randList)
 	reducedList = []

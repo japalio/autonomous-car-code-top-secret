@@ -5,10 +5,15 @@ import math
 import matplotlib.pyplot as plt
 import warnings 
 
+
+#BASICALLY, CREATES 2 GLOBALS: 
+#original Matrix : original data without normalization, which we still use to hash
+#normalized Matrix: which we only use to compute cosine similarity between 2 articles 
 def read_data():
 	reader = csv.reader(open('data/data50.csv', 'rb'))
 	#matrix create here
 	global originalMatrix
+	global normalizedMatrix 
 	originalMatrix = np.zeros((1000, 61067))
 	for row in reader:
 		articleid = int(row[0]) - 1
@@ -25,7 +30,10 @@ def read_data():
 		norm = np.linalg.norm(article)
 		newArticle = article / float(norm)
 		newMatrix[articleId] = newArticle
-	originalMatrix = newMatrix
+	# originalMatrix = newMatrix
+	normalizedMatrix = newMatrix
+	originalMatrix = csr_matrix(originalMatrix)
+
 
 
 
@@ -46,7 +54,6 @@ def createHashTables(dimension):
 		for x in range(128):
 			currentM = M[x]
 
-
 			currArticle = originalMatrix[articleId].toarray().T
 			newVector = np.dot(currentM,currArticle)
 
@@ -57,8 +64,8 @@ def createHashTables(dimension):
 				articleIdList.append(articleId)
 				originalHash[x][key] = articleIdList
 			else:
-
 				originalHash[x][key].append(articleId)
+	print('finished creating hash tables')
 
 def calculateCosineSimilarity(aWordVector, bWordVector):
 
@@ -72,26 +79,28 @@ def classification(dimension):
 	nearestNeighborCount = np.zeros	((20,20))
 	global SqTotal
 	global precisionCount
-	global allSqs
 	precisionCount = 0.0
 	SqTotal = 0.0
-	allSqs = []
 
-	Sq = set()
+
+
 
 	for articleId in range(originalMatrix.shape[0]):
+		Sq = set()
 		for x in range(128):
 			currentM = M[x]
 			currArticle = originalMatrix[articleId].toarray().T
 			newVector = np.dot(currentM,currArticle)
-
 			key = np.where(newVector > 0, 1, 0)
 			key = np.array_str(key)
 			existingValues = originalHash[x][key]
+			# print('collidingvalues: ', existingValues, 'for hash table: ', x, ' corresponding to key: ' , key, 'and article id: ', articleId)
 			for num in existingValues:
 				if(num != articleId):
 					Sq.add(num)
 
+		# print('currArticle:',  articleId)
+		# print('sq: ', Sq)
 		SqTotal += len(Sq)
 		
 
@@ -99,23 +108,38 @@ def classification(dimension):
 		maxArticle = None
 		for article in Sq:
 			#cosine similarity 
-			similarity = calculateCosineSimilarity(originalMatrix[article].toarray(), originalMatrix[articleId].toarray())
+			similarity = calculateCosineSimilarity(normalizedMatrix[article], normalizedMatrix[articleId])
 			if(similarity > maxSimilarity):
 				maxArticle = article
 				maxSimilarity = similarity
 
 		#found max by now
-		if(maxArticle/50 == articleId/50):
-			precisionCount += 1
+		if (maxArticle != None):
+			if(maxArticle/50 == articleId/50):
+				precisionCount += 1
+			nearestNeighborCount[maxArticle/50, articleId/50] += 1
+	averagePrecision = precisionCount / float(1000.0)
+	averageError = 1.0 - averagePrecision
+	averageSqSize = SqTotal / float(1000.0)
+	print ('average error for dimension', dimension, ': ', averageError)
+	print ('average error for dimension using function', dimension, ': ', averageClassificationError(nearestNeighborCount))
+	print('average sq size for dimension', dimension,': ', averageSqSize)
 
-		nearestNeighborCount[maxArticle/50, articleId/50] += 1
-	print nearestNeighborCount
 
+
+def averageClassificationError(m):
+	averageErrors = 0
+	for i in range(m.shape[0]):
+		averageErrors += m[i,i]
+	return (1.0 - averageErrors/float(1000))
 
 
 read_data()
-createHashTables(5)
-classification(5)
+for i in range(16):
+	dimension = 5 + i
+	createHashTables(dimension)
+	classification(dimension)
+
 
 
 
