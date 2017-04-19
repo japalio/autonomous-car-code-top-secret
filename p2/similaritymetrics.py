@@ -120,15 +120,16 @@ def greatestSimiliarity(hostArticle):
 			if(similarity > currMax):
 				currMax = similarity
 				maxArticle = article
+	print('currMax: ', currMax)
 	return maxArticle
 
 	
 #used to compare cosine similarity scores between every article
 def baselineClassification():
-
 	nearestNeighborCount = np.zeros	((20,20))
 	for article in range(matrix.shape[0]):
 		y = greatestSimiliarity(article)
+		
 		nearestNeighborCount[article/50, y/50] += 1
 
 	# makeHeatMap(nearestNeighborCount, groupNames, plt.cm.Blues, 'heatMap1')
@@ -144,9 +145,9 @@ def averageClassificationPrecision(m):
 
 read_data()
 readGroupNames()
-# baselineClassification()
+baselineClassification()
 
-createPlotMatrix(3)
+# createPlotMatrix(3)
 
 
 
