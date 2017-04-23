@@ -79,7 +79,7 @@ objectiveFuncValsOne = calculateStochasticGradientDescent(0.0005)
 objectiveFuncValsTwo = calculateStochasticGradientDescent(0.005)
 objectiveFuncValsThree = calculateStochasticGradientDescent(0.01)
 plt.xlabel('Iteration Number')
-plt.ylabel('Objective Function Value')
+plt.ylabel('Normalized Error')
 iterationList = [x for x in range(1, 1001)]
 plt.plot(iterationList, objectiveFuncValsOne, label='step size: 0.0005')
 plt.plot(iterationList, objectiveFuncValsTwo, label = 'step size: 0.005')
