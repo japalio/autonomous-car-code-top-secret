@@ -20,7 +20,9 @@ def calculateGradientDescent(step_size, lambdaVal):
 	X_test = np.random.normal(0,1, size=(test_n,d))
 	y_test = X_test.dot(a_true) + np.random.normal(0,0.5,size=(test_n,1))
 	
+	#zero initialization
 	a = np.zeros((d, 1))
+
 
 	for iteration in range(0,50):
 		#gradient of the sum = sum of the gradients
@@ -45,7 +47,9 @@ def calculateGradientDescent(step_size, lambdaVal):
 	return calculateNormalizedError(a, X_test, y_test)
 
 
-
+#used gradient descent instead of SGD
+#used a regularization factor
+#used non-zero intialization
 
 #NEED TO BE CALCULTING **NORMALIZED** TEST ERROR, averaged over 1000 trials
 def calculateTestError(step_size, lambdaVal):
@@ -55,4 +59,4 @@ def calculateTestError(step_size, lambdaVal):
 	averageError = sumTestError/ 1000.0
 	print averageError
 
-calculateTestError(.0005, .05)
+calculateTestError(.0005, .065)
