@@ -25,7 +25,7 @@ def calculateSquaredError(a, X, y):
 	aX = X.dot(a) - y
 	error = np.sum(np.square(aX))
 
-
+	# print error
 	return error
 
 
@@ -73,30 +73,41 @@ def calculateStochasticGradientDescent(step_size):
 	# print calculateSquaredError(a, X, y)
 	# return calculateSquaredError(a, X, y)
 
+#1a) 
+# #to calculate closed form solution
+# calculateClosedForm()
 
-calculateClosedForm()
-objectiveFuncValsOne = calculateStochasticGradientDescent(0.0005)
-objectiveFuncValsTwo = calculateStochasticGradientDescent(0.005)
-objectiveFuncValsThree = calculateStochasticGradientDescent(0.01)
-plt.xlabel('Iteration Number')
-plt.ylabel('Normalized Error')
-iterationList = [x for x in range(1, 1001)]
-plt.plot(iterationList, objectiveFuncValsOne, label='step size: 0.0005')
-plt.plot(iterationList, objectiveFuncValsTwo, label = 'step size: 0.005')
-plt.plot(iterationList, objectiveFuncValsThree, label = 'step size: 0.01')
-plt.legend(loc = 'upper left')
-plt.show()
+# #to calculate squared error when a is zeros vector
+# calculateSquaredError(np.zeros((d, 1)), X, y)
 
 
+#1b) 
 # points = []
 # points.append(calculateGradientDescent(0.00005))
 # points.append(calculateGradientDescent(0.0005))
 # points.append(calculateGradientDescent(0.0007))
 
 # print(points)
-# plt.plot([0.00005, 0.0005, 0.0007], points)
-# # plt.xlabel('Average Classification Error')
-# # # plt.ylabel('Average Number of Articles Inspected')
-# # plt.title('Classification Error vs Sq Tradeoff')
+# plt.plot([0.00005, 0.0005, 0.0007], points, color='red', linewidth=3.3)
+
+# plt.xlabel('Step Size')
+# plt.ylabel('Objective Function Value')
+# plt.title('Gradient Descent Objective Function Values Over 20 Iterations for Various Step Sizes')
 # plt.show()
+
+#1c)
+objectiveFuncValsOne = calculateStochasticGradientDescent(0.0005)
+objectiveFuncValsTwo = calculateStochasticGradientDescent(0.005)
+objectiveFuncValsThree = calculateStochasticGradientDescent(0.01)
+plt.xlabel('Iteration Number')
+plt.ylabel('Objective Function Values (log scale)')
+iterationList = [x for x in range(1, 1001)]
+plt.plot(iterationList, objectiveFuncValsOne, label='step size: 0.0005')
+plt.plot(iterationList, objectiveFuncValsTwo, label = 'step size: 0.005')
+plt.plot(iterationList, objectiveFuncValsThree, label = 'step size: 0.01')
+print objectiveFuncValsOne[999], objectiveFuncValsTwo[999], objectiveFuncValsThree[999]
+plt.legend(loc = 'upper left')
+plt.title('Stochastic Gradient Descent Objective Function Values vs Iteration')
+
+plt.show()
 

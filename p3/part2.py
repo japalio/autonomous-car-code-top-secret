@@ -32,8 +32,8 @@ def calculateLinearRegressionBaseline():
 	averagedTrainError = sumTrainError / float(10.0)
 	averagedTestError = sumTestError / float(10.0)
 
-	print 'test error: ', averagedTestError
-	print 'train error: ', averagedTrainError
+	print 'baseline test error: ', averagedTestError
+	print 'baseline train error: ', averagedTrainError
 
 def calculateL2LinearRegression(lambdaVal):
 	sumTrainError = 0
@@ -66,26 +66,35 @@ def calculateL2LinearRegression(lambdaVal):
 	return averagedTrainError, averagedTestError
 
 
+
+
+#2a)
 calculateLinearRegressionBaseline()
-lambdaList = [0.0005, 0.005, 0.05, 0.5, 5, 50, 500]
-trainErrors = []
-testErrors = []
-for item in lambdaList:
-	x, y = calculateL2LinearRegression(item)
-	trainErrors.append(x)
-	testErrors.append(y)
 
-plt.plot(lambdaList, trainErrors, label = 'normalized train error')
-plt.plot(lambdaList, testErrors, label = 'normalized test error')
-print 'trainErrors: ', trainErrors
-print 'testErrors: ', testErrors
-plt.xlabel('Lambda value')
-plt.ylabel('Normalized Error')
-plt.legend(loc = 'upper left')
-plt.show()
+#2b)
+# lambdaList = [0.0005, 0.005, 0.05, 0.5, 5, 50, 500]
+# trainErrors = []
+# testErrors = []
+# for item in lambdaList:
+# 	x, y = calculateL2LinearRegression(item)
+# 	trainErrors.append(x)
+# 	testErrors.append(y)
 
-
-trainErrors:  [0.0007208049284952462, 0.0022905641786984112, 0.0082758592065874746, 0.017225704922872835, 0.069571508789751185, 0.29002197176488853, 0.74203317299399585]
-testErrors:  [0.45362905077646409, 0.41712233928081616, 0.30151890802359116, 0.26160829801278634, 0.34071961134147921, 0.57857368554560917, 0.86164093530075636]
+# plt.plot(lambdaList, trainErrors, label = 'normalized train error')
+# plt.plot(lambdaList, testErrors, label = 'normalized test error')
+# print 'trainErrors: ', trainErrors
+# print 'testErrors: ', testErrors
+# plt.xlabel('Lambda value')
+# plt.ylabel('Normalized Error')
+# plt.legend(loc = 'upper left')
+# plt.show()
 
 
+#results: 
+# lambdaList = [0.0005, 0.005, 0.05, 0.5, 5, 50, 500]	
+# trainErrors:  [0.0007208049284952462, 0.0022905641786984112, 0.0082758592065874746, 0.017225704922872835, 0.069571508789751185, 0.29002197176488853, 0.74203317299399585]
+# testErrors:  [0.45362905077646409, 0.41712233928081616, 0.30151890802359116, 0.26160829801278634, 0.34071961134147921, 0.57857368554560917, 0.86164093530075636]
+
+
+# trainErrors:  [0.0012096184037917236, 0.0035525681699983039, 0.0049830114674279825, 0.014670830128581724, 0.068711002109696023, 0.29975385035652091, 0.74153645986237615]
+# testErrors:  [0.5488815438709459, 0.44884408979692553, 0.28979755429576731, 0.2234280611757804, 0.34307317079560018, 0.54973011701524466, 0.86593358288029554]

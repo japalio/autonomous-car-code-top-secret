@@ -16,7 +16,7 @@ def calculateStochasticGradientDescent(step_size):
 	
 	for iteration in range(0, 1000000):
 		index = iteration % 100
-		#1 x 1
+		#1 x 100
 		aX_train = np.dot(X_train[index], a) - y_train[iteration]
 
 		#1xd 
