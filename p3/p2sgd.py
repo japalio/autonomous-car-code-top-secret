@@ -1,6 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
-
+import math
 
 def calculateATrue():
 	train_n = 100
@@ -10,11 +10,12 @@ def calculateATrue():
 	sumTestError = 0
 	for i in range(0, 10):
 		X_train = np.random.normal(0,1, size=(train_n,d))
-		a = np.random.normal(0,1, size=(d,1))
-		y_train = X_train.dot(a) + np.random.normal(0,0.5,size=(train_n,1))
+		a_true = np.random.normal(0,1, size=(d,1))
+		y_train = X_train.dot(a_true) + np.random.normal(0,0.5,size=(train_n,1))
 		X_test = np.random.normal(0,1, size=(test_n,d))
-		y_test = X_test.dot(a) + np.random.normal(0,0.5,size=(test_n,1))
+		y_test = X_test.dot(a_true) + np.random.normal(0,0.5,size=(test_n,1))
 		
+		a = np.dot(np.linalg.inv(X_train),y_train)
 
 		trainNumerator =  np.linalg.norm(np.dot(X_train, a) - y_train)
 		trainDenominator = np.linalg.norm(y_train)
@@ -33,7 +34,7 @@ def calculateATrue():
 
 	print 'test error with a true: ', averagedTestError
 	print 'train error with a true: ', averagedTrainError
-	return averagedTrainError
+	return math.log(averagedTrainError)
 
 def calculateStochasticGradientDescent(step_size):
 	train_n = 100
@@ -93,7 +94,7 @@ def calculateStochasticGradientDescent3d(step_size):
 		trainNumerator =  np.linalg.norm(np.dot(X_train, a) - y_train)
 		trainDenominator = np.linalg.norm(y_train)
 		trainError = trainNumerator / float(trainDenominator)
-		normalizedTrainErrors.append(trainError)
+		normalizedTrainErrors.append(math.log(trainError))
 
 
 	return normalizedTrainErrors
@@ -141,7 +142,7 @@ def calculateStochasticGradientDescent3diii(step_size):
 	y_test = X_test.dot(a_true) + np.random.normal(0,0.5,size=(test_n,1))
 
 	a = np.zeros((d, 1))
-	normalizedTestErrors = []
+	norms = []
 	for iteration in range(0, 1000000):
 		index = iteration % 100
 		#1 x 100
@@ -150,19 +151,9 @@ def calculateStochasticGradientDescent3diii(step_size):
 		#1xd 
 	
 		gradient = 2*np.dot(X_train[index].T.reshape(d,1), aX_train.reshape(1,1))
-		a = a - step_size*(gradient + 2*0.5*a)
-	
-		if index == 0:
-			testNumerator = np.linalg.norm(np.dot(X_test, a) - y_test)
-			testDenominator = np.linalg.norm(y_test)
-			testError = testNumerator / float(testDenominator)
-			normalizedTestErrors.append(testError)
-
-
-		
-
-
-	return normalizedTestErrors
+		a = a - step_size*gradient
+		norms.append(np.linalg.norm(a))
+	return norms
 
 
 
@@ -189,11 +180,11 @@ def calculateAverageError(step_size):
 #to calculate A true: 
 # calculateATrue()
 
-#3di) 
+# #3di) 
 
 
 # plt.xlabel('Iteration Number')
-# plt.ylabel('Normalized Training Error')
+# plt.ylabel('Normalized Training Error (log scale)')
 # iterationList = [x for x in range(1, 1000001)]
 # # print objectiveFuncValsOne[999], objectiveFuncValsTwo[999], objectiveFuncValsThree[999]
 
@@ -209,7 +200,7 @@ def calculateAverageError(step_size):
 # plt.plot(iterationList, normalizedErrorTwo, label='step size: 0.005') 
 # plt.axhline(y=calculateATrue(), color='red', label='f(a*)')
 
-# plt.legend(loc = 'upper left')
+# plt.legend(loc = 'lower left')
 # plt.show()
 
 
@@ -236,7 +227,7 @@ def calculateAverageError(step_size):
 #3diii)
 plt.xlabel('Iteration Number')
 plt.ylabel('L2 Norm')
-iterationList = [x for x in range(1, 10001)]
+iterationList = [x for x in range(1, 1000001)]
 # print objectiveFuncValsOne[999], objectiveFuncValsTwo[999], objectiveFuncValsThree[999]
 
 
@@ -245,13 +236,13 @@ stepSizes = [0.00005, 0.005]
 # for stepSize in stepSizes:
 # 	normalizedError = calculateStochasticGradientDescent3d(stepSize)
 # 	plt.plot(iterationList, normalizedError, label='step size: %f') % stepSize
-normalizedErrorOne = calculateStochasticGradientDescent3diii(stepSizes[0])
-normalizedErrorTwo = calculateStochasticGradientDescent3diii(stepSizes[1])
+normsOne = calculateStochasticGradientDescent3diii(stepSizes[0])
+normsTwo = calculateStochasticGradientDescent3diii(stepSizes[1])
 
-plt.plot(iterationList, normalizedErrorOne, label='step size: 0.00005') 
-plt.plot(iterationList, normalizedErrorTwo, label='step size: 0.005') 
+plt.plot(iterationList, normsOne, label='step size: 0.00005') 
+plt.plot(iterationList, normsTwo, label='step size: 0.005') 
 
-plt.legend(loc = 'upper left')
+plt.legend(loc = 'lower left')
 plt.show()
 
 	
