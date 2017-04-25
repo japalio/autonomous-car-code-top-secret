@@ -21,7 +21,15 @@ def calculateGradientDescent(step_size, lambdaVal):
 	y_test = X_test.dot(a_true) + np.random.normal(0,0.5,size=(test_n,1))
 	
 	#zero initialization
-	a = np.zeros((d, 1))
+	#a = np.zeros((d, 1))
+	r = .00000000005
+	randomNum = np.random.normal(0,1)
+	scalingFactor = r / float(np.linalg.norm(randomNum))
+
+	# print np.linalg.norm(randomNum)
+	# print 'scaling Factor: ', scalingFactor
+	startingPoint = scalingFactor * randomNum
+	a = np.full((d, 1), startingPoint)
 
 
 	for iteration in range(0,50):
