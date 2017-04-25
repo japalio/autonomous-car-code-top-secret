@@ -69,8 +69,8 @@ for r in rList:
 	trainErrors.append(x)
 	testErrors.append(y)
 
-plt.scatter(rList, trainErrors, label = 'normalized train error')
-plt.scatter(rList, testErrors, label = 'normalized test error')
+plt.scatter(rList, trainErrors, label = 'normalized train error', color='blue')
+plt.scatter(rList, testErrors, label = 'normalized test error',color='red')
 print 'trainErrors: ', trainErrors
 print 'testErrors: ', testErrors
 plt.xlabel('r value')

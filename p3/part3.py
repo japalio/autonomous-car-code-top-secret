@@ -46,17 +46,63 @@ def calculateGradientDescent(step_size, lambdaVal):
 	# print calculateSquaredError(a, X, y)
 	return calculateNormalizedError(a, X_test, y_test)
 
+def calculateStochasticGradientDescent(step_size, lambdaVal):
+	train_n = 100
+	test_n = 10000
+	d = 200
+	X_train = np.random.normal(0,1, size=(train_n,d))
+	a_true = np.random.normal(0,1, size=(d,1))
+	y_train = X_train.dot(a_true) + np.random.normal(0,0.5,size=(train_n,1))
+	X_test = np.random.normal(0,1, size=(test_n,d))
+	y_test = X_test.dot(a_true) + np.random.normal(0,0.5,size=(test_n,1))
+	
+	#zero initialization
+	a = np.zeros((d, 1))
+
+
+	for iteration in range(0,1000000):
+		index = iteration % 100
+		#gradient of the sum = sum of the gradients
+
+		#sum of the gradients:
+		#n x 1
+		aX = np.dot(X_train[index], a) - (y_train[index])
+		# aX = X.dot(a) - y
+
+		#regularization factor
+		regularizationFactor = lambdaVal * (np.linalg.norm(a))
+		
+		#n x d
+		individualGradients = 2*np.dot(X_train[index].T.reshape(d,1), aX.reshape(1,1)) + 2*regularizationFactor
+		#d x 1  
+		# gradient = (np.sum(individualGradients, axis = 0)).reshape((d, 1))
+		# print gradient
+
+		a = a - step_size*(individualGradients)
+		# print a
+
+	# print calculateSquaredError(a, X, y)
+	return calculateNormalizedError(a, X_test, y_test)
+
 
 #used gradient descent instead of SGD
 #used a regularization factor
 #used non-zero intialization
 
 #NEED TO BE CALCULTING **NORMALIZED** TEST ERROR, averaged over 1000 trials
-def calculateTestError(step_size, lambdaVal):
+def calculateTestErrorStochastic(step_size, lambdaVal):
+	sumTestError = 0.0
+	for x in range(1000):
+		sumTestError += calculateStochasticGradientDescent(step_size, lambdaVal)
+	averageError = sumTestError/ 1000.0
+	print averageError
+
+def calculateTestErrorGradient(step_size, lambdaVal):
 	sumTestError = 0.0
 	for x in range(1000):
 		sumTestError += calculateGradientDescent(step_size, lambdaVal)
 	averageError = sumTestError/ 1000.0
 	print averageError
 
-calculateTestError(.0005, .065)
+# calculateTestErrorStochastic(.0005, .065)
+calculateTestErrorGradient(0.00005, .065)
