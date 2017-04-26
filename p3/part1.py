@@ -66,7 +66,7 @@ def calculateStochasticGradientDescent(step_size):
 	
 		gradient = 2*np.dot(X[iteration].T.reshape(d,1), aX.reshape(1,1))
 		a = a - step_size*gradient
-		objectiveFunctionValues.append(math.log(calculateSquaredError(a, X, y)))
+		objectiveFunctionValues.append(calculateSquaredError(a, X, y))
 
 	return objectiveFunctionValues
 
@@ -82,32 +82,32 @@ def calculateStochasticGradientDescent(step_size):
 
 
 #1b) 
-# points = []
-# points.append(calculateGradientDescent(0.00005))
-# points.append(calculateGradientDescent(0.0005))
-# points.append(calculateGradientDescent(0.0007))
+points = []
+points.append(calculateGradientDescent(0.00005))
+points.append(calculateGradientDescent(0.0005))
+points.append(calculateGradientDescent(0.0007))
 
-# print(points)
-# plt.plot([0.00005, 0.0005, 0.0007], points, color='red', linewidth=3.3)
+print(points)
+plt.plot([0.00005, 0.0005, 0.0007], points, color='red', linewidth=3.3)
 
-# plt.xlabel('Step Size')
-# plt.ylabel('Objective Function Value')
-# plt.title('Gradient Descent Objective Function Values Over 20 Iterations for Various Step Sizes')
-# plt.show()
+plt.xlabel('Step Size')
+plt.ylabel('Objective Function Value')
+plt.title('Gradient Descent Objective Function Values Over 20 Iterations for Various Step Sizes')
+plt.show()
 
 #1c)
-objectiveFuncValsOne = calculateStochasticGradientDescent(0.0005)
-objectiveFuncValsTwo = calculateStochasticGradientDescent(0.005)
-objectiveFuncValsThree = calculateStochasticGradientDescent(0.01)
-plt.xlabel('Iteration Number')
-plt.ylabel('Objective Function Values (log scale)')
-iterationList = [x for x in range(1, 1001)]
-plt.plot(iterationList, objectiveFuncValsOne, label='step size: 0.0005')
-plt.plot(iterationList, objectiveFuncValsTwo, label = 'step size: 0.005')
-plt.plot(iterationList, objectiveFuncValsThree, label = 'step size: 0.01')
-print objectiveFuncValsOne[999], objectiveFuncValsTwo[999], objectiveFuncValsThree[999]
-plt.legend(loc = 'upper left')
-plt.title('Stochastic Gradient Descent Objective Function Values vs Iteration')
+# objectiveFuncValsOne = calculateStochasticGradientDescent(0.0005)
+# objectiveFuncValsTwo = calculateStochasticGradientDescent(0.005)
+# objectiveFuncValsThree = calculateStochasticGradientDescent(0.01)
+# plt.xlabel('Iteration Number')
+# plt.ylabel('Objective Function Values (log scale)')
+# iterationList = [x for x in range(1, 1001)]
+# plt.plot(iterationList, objectiveFuncValsOne, label='step size: 0.0005')
+# plt.plot(iterationList, objectiveFuncValsTwo, label = 'step size: 0.005')
+# plt.plot(iterationList, objectiveFuncValsThree, label = 'step size: 0.01')
+# print objectiveFuncValsOne[999], objectiveFuncValsTwo[999], objectiveFuncValsThree[999]
+# plt.legend(loc = 'upper left')
+# plt.title('Stochastic Gradient Descent Objective Function Values vs Iteration')
 
-plt.show()
+# plt.show()
 
