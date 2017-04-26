@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import math
 
 train_n = 100
 test_n = 1000
@@ -69,25 +70,30 @@ def calculateL2LinearRegression(lambdaVal):
 
 
 #2a)
-calculateLinearRegressionBaseline()
+# calculateLinearRegressionBaseline()
 
-#2b)
-# lambdaList = [0.0005, 0.005, 0.05, 0.5, 5, 50, 500]
-# trainErrors = []
-# testErrors = []
-# for item in lambdaList:
-# 	x, y = calculateL2LinearRegression(item)
-# 	trainErrors.append(x)
-# 	testErrors.append(y)
+# 2b)
+lambdaList = [0.0005, 0.005, 0.05, 0.5, 5, 50, 500]
+loglambdalist = []
+for lam in lambdaList:
+	lam = math.log(lam)
+	loglambdalist.append(lam)
 
-# plt.plot(lambdaList, trainErrors, label = 'normalized train error')
-# plt.plot(lambdaList, testErrors, label = 'normalized test error')
-# print 'trainErrors: ', trainErrors
-# print 'testErrors: ', testErrors
-# plt.xlabel('Lambda value')
-# plt.ylabel('Normalized Error')
-# plt.legend(loc = 'upper left')
-# plt.show()
+trainErrors = []
+testErrors = []
+for item in lambdaList:
+	x, y = calculateL2LinearRegression(item)
+	trainErrors.append(x)
+	testErrors.append(y)
+
+plt.scatter(loglambdalist, trainErrors, label = 'normalized train error', color='red')
+plt.scatter(loglambdalist, testErrors, label = 'normalized test error', color='blue')
+print 'trainErrors: ', trainErrors
+print 'testErrors: ', testErrors
+plt.xlabel('Lambda value (log)')
+plt.ylabel('Normalized Error')
+plt.legend(loc = 'upper left')
+plt.show()
 
 
 #results: 
