@@ -4,16 +4,18 @@ from sklearn.decomposition import PCA
 import matplotlib.pyplot as plt
 import collections 
 
+
+#not sure if pca.mean is what we want here? 
 def pca_recover():
-	pca = PCA(n_components=1)
-	pca.fit(Y)
-	Y_var = pca.explained_variance_ 
-	pca.fit(X)
-	X_var = pca.explained_variance_
+	pcaX = PCA(n_components=1)
+	pcaY = PCA(n_components=1)
+	pcaY.fit(Y)
+	Y_var = pcaY.mean_
+	pcaX.fit(X)
+	X_var = pcaX.mean_
 	print Y_var/X_var
 
-	# print pca.fit(Y)/pca.fit(X)
-	# print(pca.explained_variance_ratio_) 
+
 
 
 
