@@ -1,13 +1,23 @@
+import numpy as np 
+
+global words 
+
 def read_data():
-	reader = csv.reader(open('data/data50.csv', 'rb'))
-	#matrix create here
-	global matrix
-	matrix = np.zeros((1000, 61067))
-	for row in reader:
-		articleid = int(row[0]) - 1
-		wordid = int(row[1]) - 1
-		wordcount = int(row[2])
-	
-		matrix[articleid][wordid] = wordcount 
-	matrix = csr_matrix(matrix)
+	global matrix 
+	matrix = np.genfromtxt ('co_occur.csv', delimiter=",")
 	return matrix 
+
+def read_dictionary():
+	text_file = open("dictionary.txt", "r")
+	words = text_file.read().split('\n')
+
+
+def normalizeMatrix():
+	matrix += 1
+	matrix = numpy.log(matrix)
+	return matrix 
+
+
+read_dictionary()
+matrix = read_data()
+matrix = normalizeMatrix(matrix)
