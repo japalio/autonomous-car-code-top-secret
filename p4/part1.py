@@ -36,9 +36,26 @@ def runPCA(numComponents):
 	X_reduced = pca.fit_transform(X)
 	print X_reduced.shape
 
+	XX = np.dot(X.T, X_reduced)
+	# print XX.shape
+	# print XX 
+	# print XX[:,2]
+	# print XX[:,2].argmax(axis=0)
+	XXsort = np.argsort(XX[:,2])
+	print XXsort[10100]
+	print XXsort[10099]
+	print XXsort[10098]
+	# print XX[:,2][9696]
+	# print XX[:,2][9960]
+	# print XX[:,2][9614]
+
+	# print XX[:,2][9912]
+
+
+	
 	#CHANGE THIS WHEN NUMCOMPONENTS IS CHANGED 
 	# plotTwoComponents(X_reduced[:,0], X_reduced[:,numComponents-1])
-	plotGender(X_reduced[:,0], X_reduced[:,numComponents-1])
+	# plotGender(X_reduced[:,0], X_reduced[:,numComponents-1])
 
 def plotTwoComponents(p1, p2):
 	labelNames = ['ACB', 'ASW', 'GWD', 'YRI', 'LWK', 'MSL', 'ESN']
