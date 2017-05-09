@@ -2,6 +2,8 @@ import numpy as np
 import math
 from PIL import Image
 import matplotlib.image as img
+import scipy.misc
+from matplotlib import pyplot as plt
 
 
 #black pixel = 0
@@ -30,40 +32,39 @@ def computeApproximation(k):
 # and matlab), or to clip values to lie between 0 and 1.
 def recoverDrawing(k):
 	im = Image.open("p5_image.gif")
-	pix = im.load()
+	#im = scipy.misc.imread("p5_image.gif")
+	# pix = im.load()
 	u, s, v = np.linalg.svd(im, full_matrices=True, compute_uv=True)
-
+	
 	#create s array with only the top k diagonal values
 	S_k = np.diag(s[:k])
 
-	#grab first k columns?
+	#grab first k columns
 	U_k = u[:,:k]
 
-
-	#grab first k rows?
+	#grab first k rows
 	V_k = v[:k:]
 
-	print S_k.shape
-	print U_k.shape
-	print V_k.shape
 
 	finalImageArray = np.matmul(np.matmul(U_k, S_k), V_k)
-
-	#TO DO: clipping/scaling here
-	print finalImageArray
-	img = Image.fromarray(finalImageArray, 'RGB')
-	img.save('my.png')
-	img.show()
+	finalImageArray = np.clip(finalImageArray, 0, 1)
+	showImage(finalImageArray)
 
 
+def showImage(array, imageName = None):
+    img = Image.fromarray(array, "RGB")
+    plt.imshow(array, cmap = 'gray')#, interpolation = 'nearest')
+    plt.show()
+ 
 
 
 
-# recoverDrawing(150)
+recoverDrawing(1)
+# print computeApproximation(1170)
 
-kValues = [1, 3, 10, 20, 50, 100, 150, 200, 400, 800, 1170]
-for kVal in kValues:
-	rank = computeApproximation(kVal)
-	print "K: ", kVal, " rank: ", rank
+# kValues = [1, 3, 10, 20, 50, 100, 150, 200, 400, 800, 1170]
+# for kVal in kValues:
+# 	rank = computeApproximation(kVal)
+# 	print "K: ", kVal, " rank: ", rank
 
 
