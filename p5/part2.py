@@ -10,17 +10,9 @@ from matplotlib import pyplot as plt
 #white pixel = 1
 
 def computeApproximation(k):
-
-	#WE NEED TO CONVERT THE IMAGE TO BLACK AND WHITE PIXEL REPRESENTATION? 
-	#OR can we assume it's already in that form...?
-	# image = img.imread('p5_image.gif')
-	
 	im = Image.open("p5_image.gif")
 	pix = im.load()
 	#pix[x,y] prints the pixel at that spot!
-
-	#why is this size transposed...? 1170 x 1160...
-	print im.size
 
 	u, s, v = np.linalg.svd(im, full_matrices=True, compute_uv=True)
 	return s[:k]
@@ -59,12 +51,12 @@ def showImage(array, imageName = None):
 
 
 
-recoverDrawing(1)
+# recoverDrawing(150)
 # print computeApproximation(1170)
 
-# kValues = [1, 3, 10, 20, 50, 100, 150, 200, 400, 800, 1170]
-# for kVal in kValues:
-# 	rank = computeApproximation(kVal)
-# 	print "K: ", kVal, " rank: ", rank
+kValues = [1, 3, 10, 20, 50, 100, 150, 200, 400, 800, 1170]
+for kVal in kValues:
+	rank = computeApproximation(kVal)
+	print "K: ", kVal, " rank: ", rank
 
 
